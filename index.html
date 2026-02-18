@@ -678,6 +678,59 @@
   }
 
   .sq-settings-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  /* ── GITHUB SYNC ── */
+  .sync-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .sync-bar.error { background: #fef2f2; border-color: #fecaca; }
+  .sync-bar.syncing { background: #eff6ff; border-color: #bfdbfe; }
+  .sync-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    animation: pulse-dot 2s infinite;
+  }
+  .sync-dot.error { background: #ef4444; animation: none; }
+  .sync-dot.syncing { background: #3b82f6; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .sync-text { flex:1; color: #15803d; font-weight: 600; }
+  .sync-bar.error .sync-text { color: #dc2626; }
+  .sync-bar.syncing .sync-text { color: #2563eb; }
+  .btn-sync {
+    padding: 5px 12px;
+    border-radius: 7px;
+    border: 1px solid #bbf7d0;
+    background: white;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-sync:hover { background: #dcfce7; }
+  .gh-settings-note {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #1e40af;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .gh-settings-note a { color: #1d4ed8; font-weight: 600; }
+
   .sq-settings-note {
     background: #fffbeb;
     border: 1px solid #fde68a;
@@ -826,6 +879,14 @@
     </button>
   </div>
 
+  <div class="sidebar-section" style="padding-top:4px">
+    <div class="sidebar-label">Sync</div>
+    <button id="githubNavBtn" onclick="openGitHubSettings()" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--text-muted);font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.15s" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='none'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <span id="githubNavLabel">Connect GitHub Sync</span>
+    </button>
+  </div>
+
   <div class="sidebar-client-tools">
     <div class="sidebar-label">Client Tools</div>
     <div class="client-tool-btn" onclick="showToast('Link copied to clipboard!','success')">
@@ -863,6 +924,12 @@
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New Ticket
       </button>
+    </div>
+
+    <div id="syncStatusBar" style="display:none" class="sync-bar">
+      <div class="sync-dot" id="syncDot"></div>
+      <span class="sync-text" id="syncText">Synced with GitHub</span>
+      <button class="btn-sync" onclick="syncFromGitHub()">↻ Refresh</button>
     </div>
 
     <div class="toolbar">
@@ -1071,6 +1138,58 @@
       <button class="modal-close" onclick="closeModal('squareChargeModal')">✕</button>
     </div>
     <div id="squareChargeBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ GITHUB SYNC MODAL ═══════════════ -->
+<div class="modal-overlay" id="githubSettingsModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:8px"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub Sync
+      </div>
+      <button class="modal-close" onclick="closeModal('githubSettingsModal')">✕</button>
+    </div>
+
+    <div class="gh-settings-note">
+      <strong style="display:block;margin-bottom:6px">📡 How cross-device sync works:</strong>
+      Your tickets are saved as a file (<code>tickets.json</code>) in your GitHub repo. Every device reads from and writes to the same file — so everything stays in sync automatically.<br><br>
+      <strong>To set up:</strong><br>
+      1. Go to <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a><br>
+      2. Give it a name like <em>Piggy Sync</em><br>
+      3. Under <strong>Scopes</strong>, check <strong>repo</strong> (full control)<br>
+      4. Click <strong>Generate token</strong> and paste it below<br>
+      5. Your repo is already pre-filled from the image setup!
+    </div>
+
+    <div class="form-grid" style="grid-template-columns:1fr">
+      <div class="form-group">
+        <label>GitHub Personal Access Token</label>
+        <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace;font-size:12px">
+        <span style="font-size:11px;color:var(--text-muted);margin-top:3px">Keep this private — it gives write access to your repo.</span>
+      </div>
+      <div class="form-group">
+        <label>GitHub Username</label>
+        <input type="text" id="gh-user" placeholder="apiero18" value="apiero18">
+      </div>
+      <div class="form-group">
+        <label>Repository Name</label>
+        <input type="text" id="gh-repo" placeholder="Fix-It-With-Piggy-Repair-Portal" value="Fix-It-With-Piggy-Repair-Portal">
+      </div>
+      <div class="form-group">
+        <label>Branch</label>
+        <input type="text" id="gh-branch" placeholder="main" value="main">
+      </div>
+    </div>
+
+    <div id="gh-test-result" style="margin-top:12px"></div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="disconnectGitHub()" style="color:#ef4444;border-color:#fca5a5">Disconnect</button>
+      <button class="btn-cancel" onclick="testGitHubConnection()">Test Connection</button>
+      <button class="btn-submit" onclick="saveGitHubSettings()">Save & Sync</button>
+    </div>
   </div>
 </div>
 
@@ -1527,35 +1646,20 @@ async function testSquareConnection() {
   const resultDiv = document.getElementById('sq-test-result');
   if (!token) { resultDiv.innerHTML = '<div style="color:#ef4444;font-size:13px;padding:8px">⚠ Please enter an Access Token first.</div>'; return; }
 
-  resultDiv.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">🔄 Testing connection...</div>';
+  resultDiv.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">🔄 Testing connection through proxy...</div>';
   const baseUrl = env === 'sandbox' ? 'https://connect.squareupsandbox.com' : 'https://connect.squareup.com';
-  const targetUrl = `${baseUrl}/v2/locations`;
-  const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
 
   try {
-    const res = await fetch(proxyUrl, {
-      method: 'GET',
-      headers: {
-        'Square-Version': '2024-01-18',
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    const text = await res.text();
-    let data;
-    try { data = JSON.parse(text); } catch(pe) {
-      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Unexpected response from proxy. Try again in a moment.</div>`;
-      return;
-    }
-    if (res.ok && data.locations) {
-      const locNames = data.locations.map(l => `${l.name} (${l.id})`).join('<br>');
-      resultDiv.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected!<br><strong>Locations found:</strong><br>${locNames}</div>`;
+    const result = await squareGet(`${baseUrl}/v2/locations`, token);
+    if (result.ok && result.data.locations) {
+      const locNames = result.data.locations.map(l => `${l.name} <span style="font-family:monospace;font-size:11px;color:#555">(${l.id})</span>`).join('<br>');
+      resultDiv.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected! Locations found:<br>${locNames}</div>`;
     } else {
-      const errDetail = data.errors?.[0]?.detail || data.errors?.[0]?.code || 'Invalid token or Location ID';
-      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Square said: <strong>${errDetail}</strong><br><span style="font-size:11.5px;color:#888">Double-check your Access Token matches your environment (sandbox vs production).</span></div>`;
+      const errDetail = result.data?.errors?.[0]?.detail || result.data?.errors?.[0]?.code || 'Invalid token or Location ID';
+      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Square said: <strong>${errDetail}</strong><br><span style="font-size:11.5px;color:#888">Make sure your token matches the selected environment (sandbox vs production).</span></div>`;
     }
   } catch(e) {
-    resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Network error: <strong>${e.message}</strong><br><span style="font-size:11.5px;color:#888">This is usually a CORS/proxy issue. Try refreshing and testing again.</span></div>`;
+    resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ All proxies failed: <strong>${e.message}</strong><br><span style="font-size:11.5px;color:#888">Wait a moment and try again.</span></div>`;
   }
 }
 
@@ -1612,6 +1716,60 @@ async function handleSquareCharge(ticketId, fromDetail = false) {
   document.getElementById('squareChargeModal').classList.add('open');
 }
 
+// ── SQUARE PROXY: tries multiple CORS proxies with fallback ──
+async function squarePost(endpoint, token, bodyObj) {
+  const proxies = [
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://proxy.cors.sh/${url}`,
+  ];
+
+  const bodyStr = JSON.stringify(bodyObj);
+  const headers = {
+    'Square-Version': '2024-01-18',
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+  let lastError = null;
+  for (const makeProxy of proxies) {
+    const proxyUrl = makeProxy(endpoint);
+    try {
+      const res = await fetch(proxyUrl, { method: 'POST', headers, body: bodyStr });
+      const text = await res.text();
+      if (!text || text.trim() === '') { lastError = 'Empty response from proxy'; continue; }
+      let data;
+      try { data = JSON.parse(text); } catch(e) { lastError = 'Non-JSON response: ' + text.slice(0,120); continue; }
+      return { ok: res.ok, status: res.status, data };
+    } catch(e) {
+      lastError = e.message;
+      continue;
+    }
+  }
+  throw new Error('All proxies failed. Last error: ' + lastError);
+}
+
+async function squareGet(endpoint, token) {
+  const proxies = [
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://proxy.cors.sh/${url}`,
+  ];
+  const headers = { 'Square-Version': '2024-01-18', 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+  let lastError = null;
+  for (const makeProxy of proxies) {
+    try {
+      const res = await fetch(makeProxy(endpoint), { method: 'GET', headers });
+      const text = await res.text();
+      if (!text || text.trim() === '') { lastError = 'Empty response'; continue; }
+      let data;
+      try { data = JSON.parse(text); } catch(e) { lastError = 'Non-JSON: ' + text.slice(0,120); continue; }
+      return { ok: res.ok, status: res.status, data };
+    } catch(e) { lastError = e.message; continue; }
+  }
+  throw new Error('All proxies failed. Last error: ' + lastError);
+}
+
 async function generateSquareLink(ticketId) {
   const t = tickets.find(x => x.id === ticketId);
   if (!t) return;
@@ -1619,71 +1777,30 @@ async function generateSquareLink(ticketId) {
 
   const btn = document.getElementById('sq-generate-btn');
   const statusDiv = document.getElementById('sq-charge-status');
-  if (btn) { btn.disabled = true; btn.textContent = 'Creating link...'; }
+  if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Creating link...'; }
 
   const baseUrl = cfg.env === 'sandbox' ? 'https://connect.squareupsandbox.com' : 'https://connect.squareup.com';
   const amountCents = Math.round(parseFloat(t.price) * 100);
-  const idempotencyKey = `piggy-${t.id}-${Date.now()}`;
   const description = `${t.repair || 'Repair'} – ${t.device} (Ticket #${t.id})`;
 
   const body = {
-    idempotency_key: idempotencyKey,
+    idempotency_key: `piggy-${t.id}-${Date.now()}`,
     quick_pay: {
       name: description,
       price_money: { amount: amountCents, currency: 'USD' },
       location_id: cfg.location
-    },
-    checkout_options: {
-      allow_tipping: false,
-      redirect_url: null,
-      merchant_support_email: t.email || null,
-      ask_for_shipping_address: false
-    },
-    pre_populated_data: {
-      buyer_email: t.email || undefined,
-      buyer_phone_number: t.phone || undefined
     }
   };
 
-  // Remove undefined keys
-  if (!body.pre_populated_data.buyer_email) delete body.pre_populated_data.buyer_email;
-  if (!body.pre_populated_data.buyer_phone_number) delete body.pre_populated_data.buyer_phone_number;
-  if (!body.checkout_options.merchant_support_email) delete body.checkout_options.merchant_support_email;
-
-  const sqEndpoint = `${baseUrl}/v2/online-checkout/payment-links`;
-  const sqProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(sqEndpoint);
-
   try {
-    const res = await fetch(sqProxyUrl, {
-      method: 'POST',
-      headers: {
-        'Square-Version': '2024-01-18',
-        'Authorization': `Bearer ${cfg.token}`,
-        'Content-Type': 'application/json',
-        'x-requested-with': 'XMLHttpRequest'
-      },
-      body: JSON.stringify(body)
-    });
+    const result = await squarePost(`${baseUrl}/v2/online-checkout/payment-links`, cfg.token, body);
 
-    const rawText = await res.text();
-    let data;
-    try { data = JSON.parse(rawText); } catch(pe) {
-      if (statusDiv) statusDiv.innerHTML = `
-        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
-          <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Proxy Error</div>
-          <div style="font-size:12px;color:#b91c1c">The CORS proxy returned an unexpected response. Please try again in a few seconds — the proxy may be rate-limiting.</div>
-          <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
-        </div>`;
-      return;
-    }
-
-    if (res.ok && data.payment_link && data.payment_link.url) {
-      const url = data.payment_link.url;
-
-      // Save link to ticket
+    if (result.ok && result.data.payment_link?.url) {
+      const url = result.data.payment_link.url;
       t.squarePaymentLink = url;
       t.squarePaymentLinkCreated = new Date().toISOString();
       saveTickets();
+      syncToGitHub();
 
       statusDiv.innerHTML = `
         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-top:4px">
@@ -1694,36 +1811,28 @@ async function generateSquareLink(ticketId) {
           </div>
           <div style="display:flex;gap:8px;margin-top:10px">
             <a href="${url}" target="_blank" style="flex:1;display:block;text-align:center;background:#0a0a0a;color:white;padding:9px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">Open in Square ↗</a>
-            <a href="https://app.squareup.com${cfg.env==='sandbox'?'sandbox':''}/dashboard/sales/transactions" target="_blank" style="flex:1;display:block;text-align:center;background:var(--gray-bg);color:var(--text);padding:9px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">Square Dashboard ↗</a>
+            <a href="https://app.squareup.com/dashboard/sales/transactions" target="_blank" style="flex:1;display:block;text-align:center;background:var(--gray-bg);color:var(--text);padding:9px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">Square Dashboard ↗</a>
           </div>
-        </div>
-      `;
+        </div>`;
       renderTickets();
     } else {
-      const errMsg = data.errors?.[0]?.detail || data.errors?.[0]?.code || 'Unknown error';
+      const errMsg = result.data?.errors?.[0]?.detail || result.data?.errors?.[0]?.code || JSON.stringify(result.data);
       statusDiv.innerHTML = `
         <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
           <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Square API Error</div>
-          <div style="font-size:12.5px;color:#b91c1c">${errMsg}</div>
-          <div style="font-size:11.5px;color:#888;margin-top:8px">Make sure your Access Token and Location ID are correct in Square Settings.</div>
+          <div style="font-size:12.5px;color:#b91c1c;margin-bottom:6px">${errMsg}</div>
+          <div style="font-size:11.5px;color:#888">Check that your token matches your selected environment (Sandbox vs Production).</div>
           <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
-        </div>
-      `;
+        </div>`;
     }
   } catch(e) {
     statusDiv.innerHTML = `
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
-        <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Network Error</div>
+        <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Connection Failed</div>
         <div style="font-size:12.5px;color:#b91c1c;margin-bottom:6px">${e.message}</div>
-        <div style="font-size:11.5px;color:#888;line-height:1.5">
-          Possible causes:<br>
-          • Your Access Token doesn't match the environment (sandbox vs production)<br>
-          • The CORS proxy is temporarily unavailable — wait 10 seconds and retry<br>
-          • Check your internet connection
-        </div>
+        <div style="font-size:11.5px;color:#888;line-height:1.6">All proxy routes failed. Try:<br>• Wait 10 seconds and try again<br>• Make sure your token matches the selected environment</div>
         <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
-      </div>
-    `;
+      </div>`;
   }
 }
 
@@ -1735,8 +1844,198 @@ function copyToClipboard(text) {
   });
 }
 
+// ═══════════════ GITHUB SYNC ═══════════════
+const GH_FILE = 'tickets.json';
+
+function getGitHubConfig() {
+  return JSON.parse(localStorage.getItem('piggy_github') || 'null');
+}
+
+function saveGitHubSettings() {
+  const token = document.getElementById('gh-token').value.trim();
+  const user  = document.getElementById('gh-user').value.trim();
+  const repo  = document.getElementById('gh-repo').value.trim();
+  const branch = document.getElementById('gh-branch').value.trim() || 'main';
+  if (!token || !user || !repo) { showToast('Please fill in all GitHub fields.', 'error'); return; }
+  localStorage.setItem('piggy_github', JSON.stringify({ token, user, repo, branch }));
+  updateGitHubNavLabel();
+  closeModal('githubSettingsModal');
+  syncToGitHub().then(() => syncFromGitHub());
+  showToast('GitHub sync configured! ✅', 'success');
+}
+
+function disconnectGitHub() {
+  if (!confirm('Disconnect GitHub sync? Your local data stays.')) return;
+  localStorage.removeItem('piggy_github');
+  updateGitHubNavLabel();
+  setSyncBar('off');
+  closeModal('githubSettingsModal');
+  showToast('GitHub sync disconnected.', '');
+}
+
+function openGitHubSettings() {
+  const cfg = getGitHubConfig();
+  if (cfg) {
+    document.getElementById('gh-token').value  = cfg.token  || '';
+    document.getElementById('gh-user').value   = cfg.user   || 'apiero18';
+    document.getElementById('gh-repo').value   = cfg.repo   || 'Fix-It-With-Piggy-Repair-Portal';
+    document.getElementById('gh-branch').value = cfg.branch || 'main';
+  }
+  document.getElementById('githubSettingsModal').classList.add('open');
+}
+
+function updateGitHubNavLabel() {
+  const cfg = getGitHubConfig();
+  const label = document.getElementById('githubNavLabel');
+  const btn   = document.getElementById('githubNavBtn');
+  if (!label) return;
+  if (cfg && cfg.token) {
+    label.textContent = 'GitHub Sync ✓';
+    if (btn) btn.style.color = '#15803d';
+  } else {
+    label.textContent = 'Connect GitHub Sync';
+    if (btn) btn.style.color = '';
+  }
+}
+
+function setSyncBar(state, msg) {
+  const bar  = document.getElementById('syncStatusBar');
+  const dot  = document.getElementById('syncDot');
+  const text = document.getElementById('syncText');
+  if (!bar) return;
+  if (state === 'off') { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  bar.className = 'sync-bar' + (state === 'error' ? ' error' : state === 'syncing' ? ' syncing' : '');
+  dot.className  = 'sync-dot' + (state === 'error' ? ' error' : state === 'syncing' ? ' syncing' : '');
+  text.textContent = msg || (state === 'syncing' ? '⏳ Syncing with GitHub...' : state === 'error' ? '⚠ Sync error' : '✓ Synced with GitHub');
+}
+
+function ghApiUrl(cfg) {
+  return `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${GH_FILE}`;
+}
+
+async function syncToGitHub() {
+  const cfg = getGitHubConfig();
+  if (!cfg) return;
+  setSyncBar('syncing', '⏳ Saving to GitHub...');
+  try {
+    // Get current SHA (needed to update existing file)
+    let sha = null;
+    const getRes = await fetch(ghApiUrl(cfg), {
+      headers: { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (getRes.ok) {
+      const existing = await getRes.json();
+      sha = existing.sha;
+    }
+
+    const body = {
+      message: `Update tickets — ${new Date().toLocaleString()}`,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(tickets, null, 2)))),
+      branch: cfg.branch
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(ghApiUrl(cfg), {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${cfg.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (putRes.ok) {
+      setSyncBar('ok', `✓ Saved to GitHub · ${new Date().toLocaleTimeString()}`);
+    } else {
+      const err = await putRes.json();
+      setSyncBar('error', '⚠ Save failed: ' + (err.message || putRes.status));
+    }
+  } catch(e) {
+    setSyncBar('error', '⚠ Sync error: ' + e.message);
+  }
+}
+
+async function syncFromGitHub() {
+  const cfg = getGitHubConfig();
+  if (!cfg) return;
+  setSyncBar('syncing', '⏳ Loading from GitHub...');
+  try {
+    // Use raw URL to avoid rate limit issues with API
+    const rawUrl = `https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/${cfg.branch}/${GH_FILE}?t=${Date.now()}`;
+    const res = await fetch(rawUrl);
+    if (!res.ok) {
+      // File might not exist yet — that's OK on first run
+      setSyncBar('ok', '✓ Ready — will create tickets.json on first save');
+      return;
+    }
+    const remote = await res.json();
+    if (Array.isArray(remote) && remote.length > 0) {
+      // Merge: remote is source of truth, but keep any local-only additions
+      const remoteIds = new Set(remote.map(t => t.id));
+      const localOnly = tickets.filter(t => !remoteIds.has(t.id));
+      tickets = [...remote, ...localOnly];
+      localStorage.setItem('piggy_tickets', JSON.stringify(tickets));
+      renderTickets();
+      setSyncBar('ok', `✓ Synced from GitHub · ${new Date().toLocaleTimeString()}`);
+    } else {
+      setSyncBar('ok', '✓ Connected — no remote tickets yet');
+    }
+  } catch(e) {
+    setSyncBar('error', '⚠ Load error: ' + e.message);
+  }
+}
+
+async function testGitHubConnection() {
+  const token  = document.getElementById('gh-token').value.trim();
+  const user   = document.getElementById('gh-user').value.trim();
+  const repo   = document.getElementById('gh-repo').value.trim();
+  const result = document.getElementById('gh-test-result');
+  if (!token || !user || !repo) { result.innerHTML = '<div style="color:#ef4444;font-size:13px;padding:8px">⚠ Fill in all fields first.</div>'; return; }
+  result.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">🔄 Testing...</div>';
+  try {
+    const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      result.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected to <strong>${data.full_name}</strong>. Ready to sync!</div>`;
+    } else {
+      result.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ ${data.message || 'Access denied'}. Check your token has <strong>repo</strong> scope.</div>`;
+    }
+  } catch(e) {
+    result.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Network error: ${e.message}</div>`;
+  }
+}
+
+// Patch saveTickets to also sync to GitHub
+const _origSaveTickets = saveTickets;
+function saveTickets() {
+  localStorage.setItem('piggy_tickets', JSON.stringify(tickets));
+  if (getGitHubConfig()) syncToGitHub();
+}
+
+// Auto-refresh from GitHub every 30 seconds when tab is visible
+setInterval(() => {
+  if (!document.hidden && getGitHubConfig()) syncFromGitHub();
+}, 30000);
+
+// Sync when tab becomes visible (user switches back)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && getGitHubConfig()) syncFromGitHub();
+});
+
 renderTickets();
 updateSquareNavLabel();
+updateGitHubNavLabel();
+
+// Initial sync from GitHub if configured
+if (getGitHubConfig()) {
+  syncFromGitHub();
+} else {
+  setSyncBar('off');
+}
 </script>
 </body>
 </html>
