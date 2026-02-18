@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fix It With Piggy - Technician Portal</title>
+<title>Fix It With Piggy – Technician Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -48,7 +48,7 @@
     display: flex;
   }
 
-  /* SIDEBAR */
+  /* ── SIDEBAR ── */
   .sidebar {
     width: var(--sidebar-width);
     min-height: 100vh;
@@ -169,7 +169,7 @@
   .footer-name { font-size: 13px; font-weight: 700; color: var(--text); }
   .footer-role { font-size: 11px; color: var(--text-muted); }
 
-  /* MAIN */
+  /* ── MAIN ── */
   .main {
     margin-left: var(--sidebar-width);
     flex: 1;
@@ -223,7 +223,7 @@
 
   .btn-new:hover { background: #c8177a; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(233,30,140,0.4); }
 
-  /* SEARCH & FILTERS */
+  /* ── SEARCH & FILTERS ── */
   .toolbar {
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -288,7 +288,7 @@
     color: var(--pink);
   }
 
-  /* TICKET GRID */
+  /* ── TICKET GRID ── */
   .tickets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -431,7 +431,7 @@
 
   .ticket-due.overdue { color: var(--red); }
 
-  /* MODAL */
+  /* ── MODAL ── */
   .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.35);
@@ -549,7 +549,7 @@
   }
   .btn-submit:hover { background: #c8177a; }
 
-  /* TICKET DETAIL MODAL */
+  /* ── TICKET DETAIL MODAL ── */
   .detail-section { margin-bottom: 20px; }
   .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
   .detail-row:last-child { border-bottom: none; }
@@ -579,7 +579,7 @@
   .status-option:hover { border-color: var(--pink-mid); color: var(--pink); }
   .status-option.selected { border-color: var(--pink); background: var(--pink); color: white; }
 
-  /* EMPTY STATE */
+  /* ── EMPTY STATE ── */
   .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -590,7 +590,128 @@
   .empty-state h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
   .empty-state p { font-size: 14px; }
 
-  /* TOAST */
+  /* ── SQUARE ── */
+  .square-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #0a0a0a;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    letter-spacing: 0.01em;
+  }
+  .square-btn:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.28); }
+  .square-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .square-btn .sq-logo { font-size: 14px; }
+
+  .square-link-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 9px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .square-link-box a {
+    color: #15803d;
+    font-size: 12.5px;
+    font-weight: 600;
+    word-break: break-all;
+    text-decoration: none;
+    flex: 1;
+  }
+  .square-link-box a:hover { text-decoration: underline; }
+  .copy-link-btn {
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .square-setup-banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .square-setup-banner .txt { color: #fff; }
+  .square-setup-banner .txt strong { font-size: 13.5px; display: block; }
+  .square-setup-banner .txt span { font-size: 12px; color: #aaa; }
+  .square-setup-banner button {
+    background: #fff;
+    color: #0a0a0a;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    font-weight: 800;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .sq-settings-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .sq-settings-note {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #92400e;
+    line-height: 1.5;
+  }
+  .sq-settings-note a { color: #b45309; font-weight: 600; }
+
+  .nav-item-sq {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    text-decoration: none;
+    margin-bottom: 2px;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .nav-item-sq:hover { background: #f0fdf4; color: #15803d; }
+  .nav-item-sq.connected { color: #15803d; }
+
+  /* ── TOAST ── */
   .toast {
     position: fixed;
     bottom: 24px; right: 24px;
@@ -610,7 +731,7 @@
   .toast.success { background: var(--green); }
   .toast.error { background: var(--red); }
 
-  /* RESPONSIVE */
+  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .sidebar { width: 60px; }
     .sidebar-logo .logo-text, .sidebar-label, .nav-item span,
@@ -639,7 +760,7 @@
   .ticket-card[data-status="cancelled"]::before { background: var(--red); }
   .ticket-card[data-status="warranty"]::before { background: var(--purple); }
 
-  /* Stats row */
+  /* Stats row (optional small summary) */
   .stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -661,6 +782,7 @@
 </head>
 <body>
 
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">🐷</div>
@@ -694,6 +816,14 @@
     </a>
   </div>
 
+  <div class="sidebar-section" style="padding-top:8px">
+    <div class="sidebar-label">Payments</div>
+    <button class="nav-item-sq" id="squareNavBtn" onclick="openSquareSettings()" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--text-muted);font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.15s">
+      <span style="font-size:16px;line-height:1;flex-shrink:0">⬛</span>
+      <span id="squareNavLabel">Connect Square</span>
+    </button>
+  </div>
+
   <div class="sidebar-client-tools">
     <div class="sidebar-label">Client Tools</div>
     <div class="client-tool-btn" onclick="showToast('Link copied to clipboard!','success')">
@@ -712,8 +842,10 @@
   </div>
 </aside>
 
+<!-- ═══════════════ MAIN ═══════════════ -->
 <main class="main">
 
+  <!-- Page: Dashboard -->
   <div id="page-dashboard">
     <div class="top-bar">
       <div class="page-header">
@@ -747,6 +879,7 @@
     <div class="tickets-grid" id="ticketsGrid"></div>
   </div>
 
+  <!-- Page: Clients -->
   <div id="page-clients" style="display:none">
     <div class="top-bar">
       <div class="page-header">
@@ -760,6 +893,7 @@
     <div id="clientsList" style="background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)"></div>
   </div>
 
+  <!-- Page: Reports -->
   <div id="page-reports" style="display:none">
     <div class="top-bar">
       <div class="page-header">
@@ -774,6 +908,7 @@
   </div>
 </main>
 
+<!-- ═══════════════ NEW TICKET MODAL ═══════════════ -->
 <div class="modal-overlay" id="newTicketModal">
   <div class="modal">
     <div class="modal-header">
@@ -858,6 +993,7 @@
   </div>
 </div>
 
+<!-- ═══════════════ TICKET DETAIL MODAL ═══════════════ -->
 <div class="modal-overlay" id="ticketDetailModal">
   <div class="modal">
     <div class="modal-header">
@@ -866,17 +1002,76 @@
     </div>
     <div id="detail-body"></div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="deleteCurrentTicket()" style="color:#ef4444;border-color:#fca5a5">Delete</button>
-      <button class="btn-submit" style="background:#006aff;box-shadow:0 2px 8px rgba(0,106,255,0.3);" onclick="openSquareTerminal()">💳 Open Square</button>
+      <button class="btn-cancel" onclick="deleteCurrentTicket()" style="color:#ef4444;border-color:#fca5a5">Delete Ticket</button>
       <button class="btn-cancel" onclick="closeModal('ticketDetailModal')">Close</button>
-      <button class="btn-submit" onclick="saveDetailChanges()">Save</button>
+      <button class="btn-submit" onclick="saveDetailChanges()">Save Changes</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SQUARE SETTINGS MODAL ═══════════════ -->
+<div class="modal-overlay" id="squareSettingsModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">⬛ Square Integration</div>
+      <button class="modal-close" onclick="closeModal('squareSettingsModal')">✕</button>
+    </div>
+
+    <div class="sq-settings-note">
+      <strong style="display:block;margin-bottom:4px">🔑 How to get your credentials:</strong>
+      1. Go to <a href="https://developer.squareup.com/apps" target="_blank">developer.squareup.com/apps</a><br>
+      2. Create or open an app → click <strong>OAuth</strong> or <strong>Credentials</strong><br>
+      3. Copy your <strong>Access Token</strong> (use Sandbox for testing)<br>
+      4. Go to <a href="https://app.squareup.com/dashboard/locations" target="_blank">app.squareup.com → Locations</a> and copy your <strong>Location ID</strong>
+    </div>
+
+    <div class="sq-settings-grid" style="margin-top:18px">
+      <div class="form-group">
+        <label>Environment</label>
+        <select id="sq-env">
+          <option value="sandbox">Sandbox (Testing)</option>
+          <option value="production">Production (Live)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Access Token</label>
+        <input type="text" id="sq-token" placeholder="EAAAl... or sandbox-..." style="font-family:monospace;font-size:12px">
+      </div>
+      <div class="form-group">
+        <label>Location ID</label>
+        <input type="text" id="sq-location" placeholder="LXXXXXXXXXXXXXXXX" style="font-family:monospace;font-size:12px">
+      </div>
+      <div class="form-group">
+        <label>Business Name (shown on checkout page)</label>
+        <input type="text" id="sq-bizname" placeholder="Fix It With Piggy">
+      </div>
+    </div>
+
+    <div id="sq-test-result" style="margin-top:12px"></div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="clearSquareSettings()" style="color:#ef4444;border-color:#fca5a5">Disconnect</button>
+      <button class="btn-cancel" onclick="testSquareConnection()">Test Connection</button>
+      <button class="btn-submit" onclick="saveSquareSettings()">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SQUARE CHARGE MODAL ═══════════════ -->
+<div class="modal-overlay" id="squareChargeModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">⬛ Square Payment Link</div>
+      <button class="modal-close" onclick="closeModal('squareChargeModal')">✕</button>
+    </div>
+    <div id="squareChargeBody"></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════ DATA ═══════════════
 let tickets = JSON.parse(localStorage.getItem('piggy_tickets') || 'null') || [
   { id:'TK18796897', client:'Charles Hamilton', phone:'(555) 234-1122', email:'charles@email.com', device:'iPhone 13', repair:'Screen Replacement', priority:'medium', price:100, paid:false, status:'in-progress', due:'2026-02-12', created:'2026-02-12', notes:'Cracked front screen.', warranty:false },
   { id:'TK18090210', client:'Jahleel Morgan', phone:'(555) 876-5432', email:'jahleel@email.com', device:'Samsung Galaxy S22', repair:'Battery Replacement', priority:'medium', price:155, paid:false, status:'pending', due:'2026-03-05', created:'2026-02-12', notes:'Battery draining fast.', warranty:false },
@@ -885,7 +1080,29 @@ let tickets = JSON.parse(localStorage.getItem('piggy_tickets') || 'null') || [
   { id:'TK99652696', client:'Jose Ortiz', phone:'(555) 789-4561', email:'jose@email.com', device:'Google Pixel 7', repair:'Software Issue', priority:'medium', price:0, paid:false, status:'pending', due:'', created:'2026-01-23', notes:'Phone keeps restarting.', warranty:false },
   { id:'TK15369874', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'iPhone 11', repair:'Camera Repair', priority:'urgent', price:0, paid:false, status:'in-progress', due:'2026-01-30', created:'2026-01-22', notes:'Front camera blurry.', warranty:false },
   { id:'TK76688095', client:'Lizette Saldana', phone:'(555) 445-6677', email:'lizette@email.com', device:'iPhone XR', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'repaired', due:'', created:'2026-01-18', notes:'Screen shattered.', warranty:false },
-  { id:'TK12083316', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'MacBook Air M1', repair:'Battery Replacement', priority:'medium', price:120, paid:true, status:'collected', due:'', created:'2026-01-15', notes:'Battery swollen.', warranty:false }
+  { id:'TK12083316', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'MacBook Air M1', repair:'Battery Replacement', priority:'medium', price:120, paid:true, status:'collected', due:'', created:'2026-01-15', notes:'Battery swollen.', warranty:false },
+  { id:'TK60956030', client:'Andrew Young', phone:'(555) 998-0011', email:'andrew@email.com', device:'Samsung A53', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'collected', due:'', created:'2026-01-10', notes:'Screen cracked.', warranty:false },
+  { id:'TK33210044', client:'Maria Lopez', phone:'(555) 222-3344', email:'maria@email.com', device:'iPhone 14', repair:'Speaker / Mic', priority:'low', price:60, paid:true, status:'collected', due:'', created:'2026-01-08', notes:'Speaker barely audible.', warranty:false },
+  { id:'TK55867391', client:'David Kim', phone:'(555) 667-8899', email:'david@email.com', device:'iPad Pro 12.9"', repair:'Screen Replacement', priority:'medium', price:220, paid:true, status:'collected', due:'', created:'2026-01-05', notes:'Cracked display.', warranty:false },
+  { id:'TK80043721', client:'Tanya Brooks', phone:'(555) 500-1234', email:'tanya@email.com', device:'iPhone 12', repair:'Charging Port', priority:'medium', price:55, paid:true, status:'collected', due:'', created:'2025-12-28', notes:'Lightning port not working.', warranty:false },
+  { id:'TK91234567', client:'Kevin Nguyen', phone:'(555) 333-1122', email:'kevin@email.com', device:'Google Pixel 6', repair:'Water Damage', priority:'urgent', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-20', notes:'Client changed mind.', warranty:false },
+  { id:'TK47382910', client:'Sarah Davis', phone:'(555) 444-5555', email:'sarah@email.com', device:'iPhone SE 2022', repair:'Screen Replacement', priority:'medium', price:75, paid:false, status:'cancelled', due:'', created:'2025-12-15', notes:'Client went elsewhere.', warranty:false },
+  { id:'TK29384756', client:'Miguel Torres', phone:'(555) 777-8888', email:'miguel@email.com', device:'OnePlus 11', repair:'Battery Replacement', priority:'medium', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-10', notes:'Device too old to repair economically.', warranty:false },
+  { id:'TK11223344', client:'Amy Chen', phone:'(555) 100-2000', email:'amy@email.com', device:'iPhone 15 Pro', repair:'Motherboard Repair', priority:'urgent', price:299, paid:true, status:'collected', due:'', created:'2025-12-05', notes:'Boot loop issue.', warranty:false },
+  { id:'TK55443322', client:'James Wilson', phone:'(555) 300-4000', email:'james@email.com', device:'Samsung S23 Ultra', repair:'Camera Repair', priority:'medium', price:140, paid:true, status:'collected', due:'', created:'2025-11-28', notes:'Rear camera shattered.', warranty:false },
+  { id:'TK99887766', client:'Patricia Moore', phone:'(555) 500-6000', email:'patricia@email.com', device:'iPad 9th Gen', repair:'Charging Port', priority:'low', price:45, paid:true, status:'collected', due:'', created:'2025-11-20', notes:'USB-C port damaged.', warranty:false },
+  { id:'TK34567890', client:'Robert Garcia', phone:'(555) 700-8000', email:'robert@email.com', device:'iPhone 13 Mini', repair:'Battery Replacement', priority:'medium', price:69, paid:true, status:'collected', due:'', created:'2025-11-12', notes:'Battery at 71% health.', warranty:false },
+  { id:'TK12345099', client:'Laura Martinez', phone:'(555) 900-1000', email:'laura@email.com', device:'Pixel 7 Pro', repair:'Data Recovery', priority:'urgent', price:150, paid:true, status:'collected', due:'', created:'2025-11-05', notes:'Phone would not turn on, data needed.', warranty:false },
+  { id:'TK66778899', client:'Tom Jackson', phone:'(555) 111-2222', email:'tom@email.com', device:'iPhone XS Max', repair:'Screen Replacement', priority:'medium', price:110, paid:true, status:'collected', due:'', created:'2025-10-28', notes:'Front screen cracked badly.', warranty:false },
+  { id:'TK44556677', client:'Nancy White', phone:'(555) 333-4444', email:'nancy@email.com', device:'Samsung Galaxy A73', repair:'Battery Replacement', priority:'low', price:55, paid:true, status:'collected', due:'', created:'2025-10-20', notes:'Old battery.', warranty:false },
+  { id:'TK88990011', client:'Chris Johnson', phone:'(555) 555-6666', email:'chris@email.com', device:'MacBook Pro 16"', repair:'Software Issue', priority:'medium', price:90, paid:true, status:'collected', due:'', created:'2025-10-15', notes:'macOS not booting.', warranty:false },
+  { id:'TK22334455', client:'Helen Lewis', phone:'(555) 777-8888', email:'helen@email.com', device:'iPhone 14 Plus', repair:'Speaker / Mic', priority:'medium', price:75, paid:true, status:'collected', due:'', created:'2025-10-08', notes:'Earpiece not working.', warranty:false },
+  { id:'TK00112233', client:'Mark Thompson', phone:'(555) 999-0000', email:'mark@email.com', device:'iPad Mini 6', repair:'Water Damage', priority:'urgent', price:200, paid:true, status:'collected', due:'', created:'2025-10-01', notes:'Fell in pool.', warranty:false },
+  { id:'TK77665544', client:'Susan Allen', phone:'(555) 222-1111', email:'susan@email.com', device:'iPhone 12 Mini', repair:'Screen Replacement', priority:'medium', price:85, paid:true, status:'collected', due:'', created:'2025-09-25', notes:'Screen cracked top corner.', warranty:false },
+  { id:'TK33445566', client:'Frank Hill', phone:'(555) 444-3333', email:'frank@email.com', device:'Galaxy Note 20', repair:'Charging Port', priority:'medium', price:60, paid:true, status:'collected', due:'', created:'2025-09-18', notes:'USB-C port loose.', warranty:false },
+  { id:'TK55667788', client:'Lisa Scott', phone:'(555) 666-5555', email:'lisa@email.com', device:'iPhone 11 Pro Max', repair:'Battery Replacement', priority:'low', price:70, paid:true, status:'collected', due:'', created:'2025-09-10', notes:'Battery draining.', warranty:false },
+  { id:'TK11009988', client:'George Turner', phone:'(555) 888-7777', email:'george@email.com', device:'Pixel 6a', repair:'Screen Replacement', priority:'medium', price:95, paid:true, status:'collected', due:'', created:'2025-09-02', notes:'Cracked front screen.', warranty:false },
+  { id:'TK99001122', client:'Diana Brown', phone:'(555) 000-9999', email:'diana@email.com', device:'iPhone 13 Pro', repair:'Camera Repair', priority:'medium', price:130, paid:true, status:'collected', due:'', created:'2025-08-26', notes:'Rear cameras not working.', warranty:false },
 ];
 
 let currentFilter = 'all';
@@ -895,6 +1112,7 @@ function saveTickets() {
   localStorage.setItem('piggy_tickets', JSON.stringify(tickets));
 }
 
+// ═══════════════ TICKET RENDERING ═══════════════
 function statusLabel(s) {
   const map = {
     'pending': 'Pending Repair',
@@ -992,6 +1210,16 @@ function renderTickets() {
         <span>Created ${formatDate(t.created)}</span>
         ${t.due ? `<span class="ticket-due ${isDueOverdue(t.due) ? 'overdue' : ''}">Due ${formatDate(t.due)}</span>` : ''}
       </div>
+      ${t.price > 0 ? `
+      ${t.squarePaymentLink ? `
+      <div class="square-link-box" style="margin-top:10px" onclick="event.stopPropagation()">
+        <span style="font-size:11px;color:#15803d;font-weight:700">⬛ Payment link ready</span>
+        <a href="${t.squarePaymentLink}" target="_blank" onclick="event.stopPropagation()" style="font-size:11px">Open ↗</a>
+        <button class="copy-link-btn" onclick="event.stopPropagation(); copyToClipboard('${t.squarePaymentLink}')">Copy</button>
+      </div>` : ''}
+      <button class="square-btn" onclick="event.stopPropagation(); handleSquareCharge('${t.id}')" title="Create Square payment link">
+        <span class="sq-logo">⬛</span> ${t.squarePaymentLink ? 'New Payment Link' : 'Charge with Square'}
+      </button>` : ''}
     </div>
   `).join('');
 }
@@ -1012,8 +1240,10 @@ function togglePaid(id) {
   if (t) { t.paid = !t.paid; saveTickets(); renderTickets(); }
 }
 
+// ═══════════════ NEW TICKET ═══════════════
 function openNewTicket() {
   document.getElementById('newTicketModal').classList.add('open');
+  // set default due date to 7 days from now
   const d = new Date(); d.setDate(d.getDate()+7);
   document.getElementById('nt-due').value = d.toISOString().split('T')[0];
 }
@@ -1056,6 +1286,7 @@ function submitTicket() {
   renderTickets();
   showToast(`Ticket #${t.id} created!`, 'success');
 
+  // Clear form
   ['nt-client','nt-phone','nt-email','nt-device','nt-notes','nt-price'].forEach(f => document.getElementById(f).value='');
   document.getElementById('nt-repair').value='';
   document.getElementById('nt-priority').value='medium';
@@ -1063,6 +1294,7 @@ function submitTicket() {
   document.getElementById('nt-warranty').value='no';
 }
 
+// ═══════════════ TICKET DETAIL ═══════════════
 function openTicketDetail(id) {
   const t = tickets.find(x => x.id === id);
   if (!t) return;
@@ -1078,14 +1310,14 @@ function openTicketDetail(id) {
   document.getElementById('detail-body').innerHTML = `
     <div class="detail-section">
       <div class="detail-row"><span class="detail-label">Client</span><span class="detail-value">${t.client}</span></div>
-      <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">${t.phone||''}</span></div>
-      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${t.email||''}</span></div>
+      <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">${t.phone||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${t.email||'—'}</span></div>
       <div class="detail-row"><span class="detail-label">Device</span><span class="detail-value">${t.device}</span></div>
-      <div class="detail-row"><span class="detail-label">Repair Type</span><span class="detail-value">${t.repair||''}</span></div>
+      <div class="detail-row"><span class="detail-label">Repair Type</span><span class="detail-value">${t.repair||'—'}</span></div>
       <div class="detail-row"><span class="detail-label">Priority</span><span class="detail-value"><span class="badge badge-${t.priority}">${t.priority}</span></span></div>
       <div class="detail-row"><span class="detail-label">Created</span><span class="detail-value">${formatDate(t.created)}</span></div>
-      <div class="detail-row"><span class="detail-label">Due Date</span><span class="detail-value">${t.due ? formatDate(t.due) : ''}</span></div>
-      <div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value" style="max-width:70%;font-weight:400;font-size:13px">${t.notes||''}</span></div>
+      <div class="detail-row"><span class="detail-label">Due Date</span><span class="detail-value">${t.due ? formatDate(t.due) : '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value" style="max-width:70%;font-weight:400;font-size:13px">${t.notes||'—'}</span></div>
     </div>
     <div style="margin-bottom:18px">
       <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Price</label>
@@ -1102,6 +1334,14 @@ function openTicketDetail(id) {
       <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Update Status</label>
       <div class="status-select-wrap" id="detailStatusBtns">${statusBtns}</div>
     </div>
+    ${t.price > 0 ? `
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:6px">Square Payment</label>
+      <div id="detail-square-area"></div>
+      <button class="square-btn" onclick="handleSquareCharge('${t.id}', true)">
+        <span class="sq-logo">⬛</span> Charge $${parseFloat(t.price).toFixed(2)} with Square
+      </button>
+    </div>` : ''}
   `;
 
   document.getElementById('ticketDetailModal').classList.add('open');
@@ -1143,24 +1383,7 @@ function deleteCurrentTicket() {
   showToast('Ticket deleted.', 'success');
 }
 
-function openSquareTerminal() {
-  const t = tickets.find(x => x.id === currentTicketId);
-  if (!t) return;
-  
-  const priceInput = document.getElementById('detail-price');
-  const currentPrice = priceInput ? parseFloat(priceInput.value) : t.price;
-  
-  const formattedPrice = parseFloat(currentPrice || 0).toFixed(2);
-  
-  navigator.clipboard.writeText(formattedPrice).then(() => {
-    showToast(`$${formattedPrice} copied! Opening Square...`, 'success');
-    window.open('https://squareup.com/dashboard/virtual-terminal', '_blank');
-  }).catch(err => {
-    showToast('Opening Square...', 'success');
-    window.open('https://squareup.com/dashboard/virtual-terminal', '_blank');
-  });
-}
-
+// ═══════════════ PAGES ═══════════════
 function showPage(page) {
   ['dashboard','clients','reports'].forEach(p => {
     const el = document.getElementById('page-'+p);
@@ -1185,7 +1408,7 @@ function renderClients() {
       <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f48cb6,#e91e8c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0">${c.name[0]}</div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">${c.name}</div>
-        <div style="font-size:12px;color:var(--text-muted)">${c.phone||''} ${c.email ? ' '+c.email : ''}</div>
+        <div style="font-size:12px;color:var(--text-muted)">${c.phone||''} ${c.email ? '· '+c.email : ''}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:13px;font-weight:700;color:var(--pink)">$${c.spent.toFixed(2)}</div>
@@ -1222,6 +1445,7 @@ function renderReports() {
   `).join('');
 }
 
+// ═══════════════ TOAST ═══════════════
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1229,13 +1453,251 @@ function showToast(msg, type='') {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ═══════════════ CLOSE ON OVERLAY CLICK ═══════════════
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('open');
   });
 });
 
+// ═══════════════ INIT ═══════════════
+
+// ── SQUARE SETTINGS ──
+function getSquareConfig() {
+  return JSON.parse(localStorage.getItem('piggy_square') || 'null');
+}
+
+function saveSquareSettings() {
+  const token = document.getElementById('sq-token').value.trim();
+  const location = document.getElementById('sq-location').value.trim();
+  const env = document.getElementById('sq-env').value;
+  const bizname = document.getElementById('sq-bizname').value.trim() || 'Fix It With Piggy';
+
+  if (!token || !location) { showToast('Please enter both Access Token and Location ID.', 'error'); return; }
+
+  const config = { token, location, env, bizname };
+  localStorage.setItem('piggy_square', JSON.stringify(config));
+  updateSquareNavLabel();
+  closeModal('squareSettingsModal');
+  showToast('Square settings saved! ✅', 'success');
+}
+
+function clearSquareSettings() {
+  if (!confirm('Disconnect Square integration?')) return;
+  localStorage.removeItem('piggy_square');
+  updateSquareNavLabel();
+  closeModal('squareSettingsModal');
+  showToast('Square disconnected.', '');
+}
+
+function openSquareSettings() {
+  const cfg = getSquareConfig();
+  if (cfg) {
+    document.getElementById('sq-token').value = cfg.token || '';
+    document.getElementById('sq-location').value = cfg.location || '';
+    document.getElementById('sq-env').value = cfg.env || 'sandbox';
+    document.getElementById('sq-bizname').value = cfg.bizname || '';
+  }
+  document.getElementById('squareSettingsModal').classList.add('open');
+}
+
+function updateSquareNavLabel() {
+  const cfg = getSquareConfig();
+  const label = document.getElementById('squareNavLabel');
+  const btn = document.getElementById('squareNavBtn');
+  if (!label) return;
+  if (cfg && cfg.token) {
+    label.textContent = 'Square Connected ✓';
+    if (btn) { btn.style.color = '#15803d'; btn.style.background = '#f0fdf4'; }
+  } else {
+    label.textContent = 'Connect Square';
+    if (btn) { btn.style.color = ''; btn.style.background = ''; }
+  }
+}
+
+async function testSquareConnection() {
+  const token = document.getElementById('sq-token').value.trim();
+  const env = document.getElementById('sq-env').value;
+  const resultDiv = document.getElementById('sq-test-result');
+  if (!token) { resultDiv.innerHTML = '<div style="color:#ef4444;font-size:13px;padding:8px">⚠ Please enter an Access Token first.</div>'; return; }
+
+  resultDiv.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">Testing connection...</div>';
+  const baseUrl = env === 'sandbox' ? 'https://connect.squareupsandbox.com' : 'https://connect.squareup.com';
+
+  try {
+    const res = await fetch(`${baseUrl}/v2/locations`, {
+      headers: { 'Square-Version': '2024-01-18', 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    if (res.ok && data.locations) {
+      const locNames = data.locations.map(l => `${l.name} (${l.id})`).join(', ');
+      resultDiv.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected! Locations: ${locNames}</div>`;
+    } else {
+      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Error: ${data.errors?.[0]?.detail || 'Invalid token'}</div>`;
+    }
+  } catch(e) {
+    resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Network error. Check token and try again.</div>`;
+  }
+}
+
+// ── SQUARE CHARGE ──
+async function handleSquareCharge(ticketId, fromDetail = false) {
+  const t = tickets.find(x => x.id === ticketId);
+  if (!t) return;
+
+  const cfg = getSquareConfig();
+  if (!cfg || !cfg.token) {
+    // Show setup prompt in charge modal
+    document.getElementById('squareChargeBody').innerHTML = `
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px">You haven't connected Square yet. Set up your credentials to start creating payment links.</p>
+      <div class="square-setup-banner">
+        <div class="txt">
+          <strong>⬛ Connect Square</strong>
+          <span>Enter your Access Token & Location ID</span>
+        </div>
+        <button onclick="closeModal('squareChargeModal'); openSquareSettings()">Set Up Now →</button>
+      </div>
+    `;
+    document.getElementById('squareChargeModal').classList.add('open');
+    return;
+  }
+
+  // Show the charge modal with loading state
+  const amountDisplay = '$' + parseFloat(t.price).toFixed(2);
+  document.getElementById('squareChargeBody').innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px">
+        <span style="color:var(--text-muted);font-weight:500">Client</span>
+        <span style="font-weight:700">${t.client}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px">
+        <span style="color:var(--text-muted);font-weight:500">Device</span>
+        <span style="font-weight:700">${t.device}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px">
+        <span style="color:var(--text-muted);font-weight:500">Repair</span>
+        <span style="font-weight:700">${t.repair || '—'}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:16px">
+        <span style="color:var(--text-muted);font-weight:500">Amount</span>
+        <span style="font-weight:800;color:var(--pink)">${amountDisplay}</span>
+      </div>
+    </div>
+    <div id="sq-charge-status">
+      <button class="square-btn" id="sq-generate-btn" onclick="generateSquareLink('${t.id}')">
+        <span class="sq-logo">⬛</span> Generate Payment Link
+      </button>
+    </div>
+    <p style="font-size:11.5px;color:var(--text-light);margin-top:10px;text-align:center">A Square checkout link will be created. Share it with your customer or open it on a payment device.</p>
+  `;
+  document.getElementById('squareChargeModal').classList.add('open');
+}
+
+async function generateSquareLink(ticketId) {
+  const t = tickets.find(x => x.id === ticketId);
+  if (!t) return;
+  const cfg = getSquareConfig();
+
+  const btn = document.getElementById('sq-generate-btn');
+  const statusDiv = document.getElementById('sq-charge-status');
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating link...'; }
+
+  const baseUrl = cfg.env === 'sandbox' ? 'https://connect.squareupsandbox.com' : 'https://connect.squareup.com';
+  const amountCents = Math.round(parseFloat(t.price) * 100);
+  const idempotencyKey = `piggy-${t.id}-${Date.now()}`;
+  const description = `${t.repair || 'Repair'} – ${t.device} (Ticket #${t.id})`;
+
+  const body = {
+    idempotency_key: idempotencyKey,
+    quick_pay: {
+      name: description,
+      price_money: { amount: amountCents, currency: 'USD' },
+      location_id: cfg.location
+    },
+    checkout_options: {
+      allow_tipping: false,
+      redirect_url: null,
+      merchant_support_email: t.email || null,
+      ask_for_shipping_address: false
+    },
+    pre_populated_data: {
+      buyer_email: t.email || undefined,
+      buyer_phone_number: t.phone || undefined
+    }
+  };
+
+  // Remove undefined keys
+  if (!body.pre_populated_data.buyer_email) delete body.pre_populated_data.buyer_email;
+  if (!body.pre_populated_data.buyer_phone_number) delete body.pre_populated_data.buyer_phone_number;
+  if (!body.checkout_options.merchant_support_email) delete body.checkout_options.merchant_support_email;
+
+  try {
+    const res = await fetch(`${baseUrl}/v2/online-checkout/payment-links`, {
+      method: 'POST',
+      headers: {
+        'Square-Version': '2024-01-18',
+        'Authorization': `Bearer ${cfg.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.payment_link && data.payment_link.url) {
+      const url = data.payment_link.url;
+
+      // Save link to ticket
+      t.squarePaymentLink = url;
+      t.squarePaymentLinkCreated = new Date().toISOString();
+      saveTickets();
+
+      statusDiv.innerHTML = `
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-top:4px">
+          <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:8px">✅ Payment link created!</div>
+          <div class="square-link-box" style="margin-top:0">
+            <a href="${url}" target="_blank">${url}</a>
+            <button class="copy-link-btn" onclick="copyToClipboard('${url}')">Copy</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <a href="${url}" target="_blank" style="flex:1;display:block;text-align:center;background:#0a0a0a;color:white;padding:9px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">Open in Square ↗</a>
+            <a href="https://app.squareup.com${cfg.env==='sandbox'?'sandbox':''}/dashboard/sales/transactions" target="_blank" style="flex:1;display:block;text-align:center;background:var(--gray-bg);color:var(--text);padding:9px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none">Square Dashboard ↗</a>
+          </div>
+        </div>
+      `;
+      renderTickets();
+    } else {
+      const errMsg = data.errors?.[0]?.detail || data.errors?.[0]?.code || 'Unknown error';
+      statusDiv.innerHTML = `
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
+          <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Square API Error</div>
+          <div style="font-size:12.5px;color:#b91c1c">${errMsg}</div>
+          <div style="font-size:11.5px;color:#888;margin-top:8px">Make sure your Access Token and Location ID are correct in Square Settings.</div>
+          <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
+        </div>
+      `;
+    }
+  } catch(e) {
+    statusDiv.innerHTML = `
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
+        <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Network Error</div>
+        <div style="font-size:12.5px;color:#b91c1c">${e.message}</div>
+        <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
+      </div>
+    `;
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('Link copied! 📋', 'success')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Link copied! 📋', 'success');
+  });
+}
+
 renderTickets();
+updateSquareNavLabel();
 </script>
 </body>
 </html>
