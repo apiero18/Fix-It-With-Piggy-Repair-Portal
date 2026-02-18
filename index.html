@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fix It With Piggy – Technician Portal</title>
+<title>Fix It With Piggy - Technician Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -48,7 +48,7 @@
     display: flex;
   }
 
-  /* ── SIDEBAR ── */
+  /* SIDEBAR */
   .sidebar {
     width: var(--sidebar-width);
     min-height: 100vh;
@@ -169,7 +169,7 @@
   .footer-name { font-size: 13px; font-weight: 700; color: var(--text); }
   .footer-role { font-size: 11px; color: var(--text-muted); }
 
-  /* ── MAIN ── */
+  /* MAIN */
   .main {
     margin-left: var(--sidebar-width);
     flex: 1;
@@ -223,7 +223,7 @@
 
   .btn-new:hover { background: #c8177a; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(233,30,140,0.4); }
 
-  /* ── SEARCH & FILTERS ── */
+  /* SEARCH & FILTERS */
   .toolbar {
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -288,7 +288,7 @@
     color: var(--pink);
   }
 
-  /* ── TICKET GRID ── */
+  /* TICKET GRID */
   .tickets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -431,7 +431,7 @@
 
   .ticket-due.overdue { color: var(--red); }
 
-  /* ── MODAL ── */
+  /* MODAL */
   .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.35);
@@ -549,7 +549,7 @@
   }
   .btn-submit:hover { background: #c8177a; }
 
-  /* ── TICKET DETAIL MODAL ── */
+  /* TICKET DETAIL MODAL */
   .detail-section { margin-bottom: 20px; }
   .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
   .detail-row:last-child { border-bottom: none; }
@@ -579,7 +579,7 @@
   .status-option:hover { border-color: var(--pink-mid); color: var(--pink); }
   .status-option.selected { border-color: var(--pink); background: var(--pink); color: white; }
 
-  /* ── EMPTY STATE ── */
+  /* EMPTY STATE */
   .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -590,7 +590,7 @@
   .empty-state h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
   .empty-state p { font-size: 14px; }
 
-  /* ── TOAST ── */
+  /* TOAST */
   .toast {
     position: fixed;
     bottom: 24px; right: 24px;
@@ -610,7 +610,7 @@
   .toast.success { background: var(--green); }
   .toast.error { background: var(--red); }
 
-  /* ── RESPONSIVE ── */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     .sidebar { width: 60px; }
     .sidebar-logo .logo-text, .sidebar-label, .nav-item span,
@@ -639,7 +639,7 @@
   .ticket-card[data-status="cancelled"]::before { background: var(--red); }
   .ticket-card[data-status="warranty"]::before { background: var(--purple); }
 
-  /* Stats row (optional small summary) */
+  /* Stats row */
   .stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -661,7 +661,6 @@
 </head>
 <body>
 
-<!-- ═══════════════ SIDEBAR ═══════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">🐷</div>
@@ -713,10 +712,8 @@
   </div>
 </aside>
 
-<!-- ═══════════════ MAIN ═══════════════ -->
 <main class="main">
 
-  <!-- Page: Dashboard -->
   <div id="page-dashboard">
     <div class="top-bar">
       <div class="page-header">
@@ -750,7 +747,6 @@
     <div class="tickets-grid" id="ticketsGrid"></div>
   </div>
 
-  <!-- Page: Clients -->
   <div id="page-clients" style="display:none">
     <div class="top-bar">
       <div class="page-header">
@@ -764,7 +760,6 @@
     <div id="clientsList" style="background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)"></div>
   </div>
 
-  <!-- Page: Reports -->
   <div id="page-reports" style="display:none">
     <div class="top-bar">
       <div class="page-header">
@@ -779,7 +774,6 @@
   </div>
 </main>
 
-<!-- ═══════════════ NEW TICKET MODAL ═══════════════ -->
 <div class="modal-overlay" id="newTicketModal">
   <div class="modal">
     <div class="modal-header">
@@ -864,7 +858,6 @@
   </div>
 </div>
 
-<!-- ═══════════════ TICKET DETAIL MODAL ═══════════════ -->
 <div class="modal-overlay" id="ticketDetailModal">
   <div class="modal">
     <div class="modal-header">
@@ -873,9 +866,10 @@
     </div>
     <div id="detail-body"></div>
     <div class="modal-footer">
-      <button class="btn-cancel" onclick="deleteCurrentTicket()" style="color:#ef4444;border-color:#fca5a5">Delete Ticket</button>
+      <button class="btn-cancel" onclick="deleteCurrentTicket()" style="color:#ef4444;border-color:#fca5a5">Delete</button>
+      <button class="btn-submit" style="background:#006aff;box-shadow:0 2px 8px rgba(0,106,255,0.3);" onclick="openSquareTerminal()">💳 Open Square</button>
       <button class="btn-cancel" onclick="closeModal('ticketDetailModal')">Close</button>
-      <button class="btn-submit" onclick="saveDetailChanges()">Save Changes</button>
+      <button class="btn-submit" onclick="saveDetailChanges()">Save</button>
     </div>
   </div>
 </div>
@@ -883,7 +877,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════ DATA ═══════════════
 let tickets = JSON.parse(localStorage.getItem('piggy_tickets') || 'null') || [
   { id:'TK18796897', client:'Charles Hamilton', phone:'(555) 234-1122', email:'charles@email.com', device:'iPhone 13', repair:'Screen Replacement', priority:'medium', price:100, paid:false, status:'in-progress', due:'2026-02-12', created:'2026-02-12', notes:'Cracked front screen.', warranty:false },
   { id:'TK18090210', client:'Jahleel Morgan', phone:'(555) 876-5432', email:'jahleel@email.com', device:'Samsung Galaxy S22', repair:'Battery Replacement', priority:'medium', price:155, paid:false, status:'pending', due:'2026-03-05', created:'2026-02-12', notes:'Battery draining fast.', warranty:false },
@@ -892,29 +885,7 @@ let tickets = JSON.parse(localStorage.getItem('piggy_tickets') || 'null') || [
   { id:'TK99652696', client:'Jose Ortiz', phone:'(555) 789-4561', email:'jose@email.com', device:'Google Pixel 7', repair:'Software Issue', priority:'medium', price:0, paid:false, status:'pending', due:'', created:'2026-01-23', notes:'Phone keeps restarting.', warranty:false },
   { id:'TK15369874', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'iPhone 11', repair:'Camera Repair', priority:'urgent', price:0, paid:false, status:'in-progress', due:'2026-01-30', created:'2026-01-22', notes:'Front camera blurry.', warranty:false },
   { id:'TK76688095', client:'Lizette Saldana', phone:'(555) 445-6677', email:'lizette@email.com', device:'iPhone XR', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'repaired', due:'', created:'2026-01-18', notes:'Screen shattered.', warranty:false },
-  { id:'TK12083316', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'MacBook Air M1', repair:'Battery Replacement', priority:'medium', price:120, paid:true, status:'collected', due:'', created:'2026-01-15', notes:'Battery swollen.', warranty:false },
-  { id:'TK60956030', client:'Andrew Young', phone:'(555) 998-0011', email:'andrew@email.com', device:'Samsung A53', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'collected', due:'', created:'2026-01-10', notes:'Screen cracked.', warranty:false },
-  { id:'TK33210044', client:'Maria Lopez', phone:'(555) 222-3344', email:'maria@email.com', device:'iPhone 14', repair:'Speaker / Mic', priority:'low', price:60, paid:true, status:'collected', due:'', created:'2026-01-08', notes:'Speaker barely audible.', warranty:false },
-  { id:'TK55867391', client:'David Kim', phone:'(555) 667-8899', email:'david@email.com', device:'iPad Pro 12.9"', repair:'Screen Replacement', priority:'medium', price:220, paid:true, status:'collected', due:'', created:'2026-01-05', notes:'Cracked display.', warranty:false },
-  { id:'TK80043721', client:'Tanya Brooks', phone:'(555) 500-1234', email:'tanya@email.com', device:'iPhone 12', repair:'Charging Port', priority:'medium', price:55, paid:true, status:'collected', due:'', created:'2025-12-28', notes:'Lightning port not working.', warranty:false },
-  { id:'TK91234567', client:'Kevin Nguyen', phone:'(555) 333-1122', email:'kevin@email.com', device:'Google Pixel 6', repair:'Water Damage', priority:'urgent', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-20', notes:'Client changed mind.', warranty:false },
-  { id:'TK47382910', client:'Sarah Davis', phone:'(555) 444-5555', email:'sarah@email.com', device:'iPhone SE 2022', repair:'Screen Replacement', priority:'medium', price:75, paid:false, status:'cancelled', due:'', created:'2025-12-15', notes:'Client went elsewhere.', warranty:false },
-  { id:'TK29384756', client:'Miguel Torres', phone:'(555) 777-8888', email:'miguel@email.com', device:'OnePlus 11', repair:'Battery Replacement', priority:'medium', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-10', notes:'Device too old to repair economically.', warranty:false },
-  { id:'TK11223344', client:'Amy Chen', phone:'(555) 100-2000', email:'amy@email.com', device:'iPhone 15 Pro', repair:'Motherboard Repair', priority:'urgent', price:299, paid:true, status:'collected', due:'', created:'2025-12-05', notes:'Boot loop issue.', warranty:false },
-  { id:'TK55443322', client:'James Wilson', phone:'(555) 300-4000', email:'james@email.com', device:'Samsung S23 Ultra', repair:'Camera Repair', priority:'medium', price:140, paid:true, status:'collected', due:'', created:'2025-11-28', notes:'Rear camera shattered.', warranty:false },
-  { id:'TK99887766', client:'Patricia Moore', phone:'(555) 500-6000', email:'patricia@email.com', device:'iPad 9th Gen', repair:'Charging Port', priority:'low', price:45, paid:true, status:'collected', due:'', created:'2025-11-20', notes:'USB-C port damaged.', warranty:false },
-  { id:'TK34567890', client:'Robert Garcia', phone:'(555) 700-8000', email:'robert@email.com', device:'iPhone 13 Mini', repair:'Battery Replacement', priority:'medium', price:69, paid:true, status:'collected', due:'', created:'2025-11-12', notes:'Battery at 71% health.', warranty:false },
-  { id:'TK12345099', client:'Laura Martinez', phone:'(555) 900-1000', email:'laura@email.com', device:'Pixel 7 Pro', repair:'Data Recovery', priority:'urgent', price:150, paid:true, status:'collected', due:'', created:'2025-11-05', notes:'Phone would not turn on, data needed.', warranty:false },
-  { id:'TK66778899', client:'Tom Jackson', phone:'(555) 111-2222', email:'tom@email.com', device:'iPhone XS Max', repair:'Screen Replacement', priority:'medium', price:110, paid:true, status:'collected', due:'', created:'2025-10-28', notes:'Front screen cracked badly.', warranty:false },
-  { id:'TK44556677', client:'Nancy White', phone:'(555) 333-4444', email:'nancy@email.com', device:'Samsung Galaxy A73', repair:'Battery Replacement', priority:'low', price:55, paid:true, status:'collected', due:'', created:'2025-10-20', notes:'Old battery.', warranty:false },
-  { id:'TK88990011', client:'Chris Johnson', phone:'(555) 555-6666', email:'chris@email.com', device:'MacBook Pro 16"', repair:'Software Issue', priority:'medium', price:90, paid:true, status:'collected', due:'', created:'2025-10-15', notes:'macOS not booting.', warranty:false },
-  { id:'TK22334455', client:'Helen Lewis', phone:'(555) 777-8888', email:'helen@email.com', device:'iPhone 14 Plus', repair:'Speaker / Mic', priority:'medium', price:75, paid:true, status:'collected', due:'', created:'2025-10-08', notes:'Earpiece not working.', warranty:false },
-  { id:'TK00112233', client:'Mark Thompson', phone:'(555) 999-0000', email:'mark@email.com', device:'iPad Mini 6', repair:'Water Damage', priority:'urgent', price:200, paid:true, status:'collected', due:'', created:'2025-10-01', notes:'Fell in pool.', warranty:false },
-  { id:'TK77665544', client:'Susan Allen', phone:'(555) 222-1111', email:'susan@email.com', device:'iPhone 12 Mini', repair:'Screen Replacement', priority:'medium', price:85, paid:true, status:'collected', due:'', created:'2025-09-25', notes:'Screen cracked top corner.', warranty:false },
-  { id:'TK33445566', client:'Frank Hill', phone:'(555) 444-3333', email:'frank@email.com', device:'Galaxy Note 20', repair:'Charging Port', priority:'medium', price:60, paid:true, status:'collected', due:'', created:'2025-09-18', notes:'USB-C port loose.', warranty:false },
-  { id:'TK55667788', client:'Lisa Scott', phone:'(555) 666-5555', email:'lisa@email.com', device:'iPhone 11 Pro Max', repair:'Battery Replacement', priority:'low', price:70, paid:true, status:'collected', due:'', created:'2025-09-10', notes:'Battery draining.', warranty:false },
-  { id:'TK11009988', client:'George Turner', phone:'(555) 888-7777', email:'george@email.com', device:'Pixel 6a', repair:'Screen Replacement', priority:'medium', price:95, paid:true, status:'collected', due:'', created:'2025-09-02', notes:'Cracked front screen.', warranty:false },
-  { id:'TK99001122', client:'Diana Brown', phone:'(555) 000-9999', email:'diana@email.com', device:'iPhone 13 Pro', repair:'Camera Repair', priority:'medium', price:130, paid:true, status:'collected', due:'', created:'2025-08-26', notes:'Rear cameras not working.', warranty:false },
+  { id:'TK12083316', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'MacBook Air M1', repair:'Battery Replacement', priority:'medium', price:120, paid:true, status:'collected', due:'', created:'2026-01-15', notes:'Battery swollen.', warranty:false }
 ];
 
 let currentFilter = 'all';
@@ -924,7 +895,6 @@ function saveTickets() {
   localStorage.setItem('piggy_tickets', JSON.stringify(tickets));
 }
 
-// ═══════════════ TICKET RENDERING ═══════════════
 function statusLabel(s) {
   const map = {
     'pending': 'Pending Repair',
@@ -1042,10 +1012,8 @@ function togglePaid(id) {
   if (t) { t.paid = !t.paid; saveTickets(); renderTickets(); }
 }
 
-// ═══════════════ NEW TICKET ═══════════════
 function openNewTicket() {
   document.getElementById('newTicketModal').classList.add('open');
-  // set default due date to 7 days from now
   const d = new Date(); d.setDate(d.getDate()+7);
   document.getElementById('nt-due').value = d.toISOString().split('T')[0];
 }
@@ -1088,7 +1056,6 @@ function submitTicket() {
   renderTickets();
   showToast(`Ticket #${t.id} created!`, 'success');
 
-  // Clear form
   ['nt-client','nt-phone','nt-email','nt-device','nt-notes','nt-price'].forEach(f => document.getElementById(f).value='');
   document.getElementById('nt-repair').value='';
   document.getElementById('nt-priority').value='medium';
@@ -1096,7 +1063,6 @@ function submitTicket() {
   document.getElementById('nt-warranty').value='no';
 }
 
-// ═══════════════ TICKET DETAIL ═══════════════
 function openTicketDetail(id) {
   const t = tickets.find(x => x.id === id);
   if (!t) return;
@@ -1112,14 +1078,14 @@ function openTicketDetail(id) {
   document.getElementById('detail-body').innerHTML = `
     <div class="detail-section">
       <div class="detail-row"><span class="detail-label">Client</span><span class="detail-value">${t.client}</span></div>
-      <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">${t.phone||'—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${t.email||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">${t.phone||''}</span></div>
+      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${t.email||''}</span></div>
       <div class="detail-row"><span class="detail-label">Device</span><span class="detail-value">${t.device}</span></div>
-      <div class="detail-row"><span class="detail-label">Repair Type</span><span class="detail-value">${t.repair||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Repair Type</span><span class="detail-value">${t.repair||''}</span></div>
       <div class="detail-row"><span class="detail-label">Priority</span><span class="detail-value"><span class="badge badge-${t.priority}">${t.priority}</span></span></div>
       <div class="detail-row"><span class="detail-label">Created</span><span class="detail-value">${formatDate(t.created)}</span></div>
-      <div class="detail-row"><span class="detail-label">Due Date</span><span class="detail-value">${t.due ? formatDate(t.due) : '—'}</span></div>
-      <div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value" style="max-width:70%;font-weight:400;font-size:13px">${t.notes||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Due Date</span><span class="detail-value">${t.due ? formatDate(t.due) : ''}</span></div>
+      <div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value" style="max-width:70%;font-weight:400;font-size:13px">${t.notes||''}</span></div>
     </div>
     <div style="margin-bottom:18px">
       <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Price</label>
@@ -1177,7 +1143,24 @@ function deleteCurrentTicket() {
   showToast('Ticket deleted.', 'success');
 }
 
-// ═══════════════ PAGES ═══════════════
+function openSquareTerminal() {
+  const t = tickets.find(x => x.id === currentTicketId);
+  if (!t) return;
+  
+  const priceInput = document.getElementById('detail-price');
+  const currentPrice = priceInput ? parseFloat(priceInput.value) : t.price;
+  
+  const formattedPrice = parseFloat(currentPrice || 0).toFixed(2);
+  
+  navigator.clipboard.writeText(formattedPrice).then(() => {
+    showToast(`$${formattedPrice} copied! Opening Square...`, 'success');
+    window.open('https://squareup.com/dashboard/virtual-terminal', '_blank');
+  }).catch(err => {
+    showToast('Opening Square...', 'success');
+    window.open('https://squareup.com/dashboard/virtual-terminal', '_blank');
+  });
+}
+
 function showPage(page) {
   ['dashboard','clients','reports'].forEach(p => {
     const el = document.getElementById('page-'+p);
@@ -1202,7 +1185,7 @@ function renderClients() {
       <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f48cb6,#e91e8c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0">${c.name[0]}</div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">${c.name}</div>
-        <div style="font-size:12px;color:var(--text-muted)">${c.phone||''} ${c.email ? '· '+c.email : ''}</div>
+        <div style="font-size:12px;color:var(--text-muted)">${c.phone||''} ${c.email ? ' '+c.email : ''}</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:13px;font-weight:700;color:var(--pink)">$${c.spent.toFixed(2)}</div>
@@ -1239,7 +1222,6 @@ function renderReports() {
   `).join('');
 }
 
-// ═══════════════ TOAST ═══════════════
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1247,16 +1229,13 @@ function showToast(msg, type='') {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ═══════════════ CLOSE ON OVERLAY CLICK ═══════════════
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('open');
   });
 });
 
-// ═══════════════ INIT ═══════════════
 renderTickets();
 </script>
 </body>
 </html>
-
