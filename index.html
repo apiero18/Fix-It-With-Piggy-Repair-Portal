@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix It With Piggy – Technician Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #e91e8c;
+    --pink-light: #fce4f3;
+    --pink-mid: #f48cb6;
+    --pink-pale: #fff0f8;
+    --pink-border: #f9c6e2;
+    --bg: #f5f0ff;
+    --bg2: #fdf4fb;
+    --sidebar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #8b8b9e;
+    --text-light: #b0b0c0;
+    --border: #ede8f5;
+    --green: #22c55e;
+    --green-bg: #dcfce7;
+    --orange: #f59e0b;
+    --orange-bg: #fef3c7;
+    --blue: #3b82f6;
+    --blue-bg: #dbeafe;
+    --purple: #8b5cf6;
+    --purple-bg: #ede9fe;
+    --red: #ef4444;
+    --red-bg: #fee2e2;
+    --gray: #6b7280;
+    --gray-bg: #f3f4f6;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(233,30,140,0.04);
+    --shadow-hover: 0 4px 20px rgba(233,30,140,0.12);
+    --radius: 14px;
+    --sidebar-width: 210px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 18px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #ff6eb4, #e91e8c);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .logo-text { line-height: 1.1; }
+  .logo-title { font-size: 13px; font-weight: 800; color: var(--text); font-family: 'Nunito', sans-serif; }
+  .logo-sub { font-size: 11px; color: var(--pink); font-weight: 600; }
+
+  .sidebar-section {
+    padding: 20px 12px 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    padding: 0 8px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    text-decoration: none;
+    margin-bottom: 2px;
+  }
+
+  .nav-item:hover { background: var(--pink-pale); color: var(--pink); }
+  .nav-item.active { background: var(--pink-light); color: var(--pink); font-weight: 700; }
+
+  .nav-item svg { flex-shrink: 0; }
+
+  .sidebar-client-tools {
+    padding: 0 12px;
+    margin-top: 4px;
+  }
+
+  .client-tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    margin-bottom: 4px;
+  }
+
+  .client-tool-btn:hover { background: var(--pink-pale); color: var(--pink); }
+
+  .client-tool-hint {
+    font-size: 11px;
+    color: var(--text-light);
+    padding: 2px 10px 10px;
+    line-height: 1.4;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 14px 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f48cb6, #e91e8c);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .footer-info { line-height: 1.2; }
+  .footer-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .footer-role { font-size: 11px; color: var(--text-muted); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    min-height: 100vh;
+    padding: 28px 32px 40px;
+    max-width: calc(100vw - var(--sidebar-width));
+  }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .page-pig {
+    width: 62px; height: 62px;
+    background: linear-gradient(135deg, #ffe0f0, #ffc4e0);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px;
+    flex-shrink: 0;
+  }
+
+  .page-title { font-size: 28px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text); line-height: 1.1; }
+  .page-sub { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+  .btn-new {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--pink);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(233,30,140,0.3);
+  }
+
+  .btn-new:hover { background: #c8177a; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(233,30,140,0.4); }
+
+  /* ── SEARCH & FILTERS ── */
+  .toolbar {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .search-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1px solid var(--pink-border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--pink-pale);
+    color: var(--text);
+    outline: none;
+    transition: border 0.15s;
+  }
+
+  .search-input:focus { border-color: var(--pink-mid); background: #fff; }
+  .search-input::placeholder { color: var(--text-light); }
+
+  .filter-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-tab:hover { border-color: var(--pink-mid); color: var(--pink); }
+  .filter-tab.active {
+    background: var(--pink-light);
+    border-color: var(--pink-mid);
+    color: var(--pink);
+  }
+
+  /* ── TICKET GRID ── */
+  .tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .ticket-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ticket-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent-color, var(--pink-border));
+  }
+
+  .ticket-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+    border-color: var(--pink-border);
+  }
+
+  .ticket-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ticket-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .badge-medium { background: #fef3c7; color: #b45309; }
+  .badge-urgent { background: #fee2e2; color: #991b1b; }
+  .badge-low { background: #dcfce7; color: #166534; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  .status-in-progress { background: var(--blue-bg); color: var(--blue); }
+  .status-pending { background: var(--orange-bg); color: #b45309; }
+  .status-repaired { background: var(--green-bg); color: #15803d; }
+  .status-collected { background: var(--gray-bg); color: var(--gray); }
+  .status-cancelled { background: var(--red-bg); color: #b91c1c; }
+  .status-warranty { background: var(--purple-bg); color: var(--purple); }
+
+  .ticket-client {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .ticket-device {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .ticket-paid-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .check-box {
+    width: 15px; height: 15px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .check-box.checked {
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+
+  .ticket-price {
+    background: var(--pink-pale);
+    border: 1px solid var(--pink-border);
+    border-radius: 8px;
+    padding: 9px 13px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--pink);
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 12px;
+  }
+
+  .ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .ticket-due {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pink);
+  }
+
+  .ticket-due.overdue { color: var(--red); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px 30px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    transform: scale(0.95);
+    transition: transform 0.2s;
+  }
+
+  .modal-overlay.open .modal { transform: scale(1); }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-title { font-size: 20px; font-weight: 800; font-family: 'Nunito', sans-serif; }
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--pink-pale); color: var(--pink); }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 12.5px; font-weight: 700; color: var(--text); }
+
+  input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], select, textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 13.5px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    background: #fff;
+    outline: none;
+    transition: border 0.15s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--pink-mid);
+    box-shadow: 0 0 0 3px rgba(233,30,140,0.07);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-cancel {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .btn-cancel:hover { background: var(--gray-bg); }
+
+  .btn-submit {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 9px;
+    background: var(--pink);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(233,30,140,0.3);
+  }
+  .btn-submit:hover { background: #c8177a; }
+
+  /* ── TICKET DETAIL MODAL ── */
+  .detail-section { margin-bottom: 20px; }
+  .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label { color: var(--text-muted); font-weight: 500; }
+  .detail-value { font-weight: 700; color: var(--text); text-align: right; max-width: 60%; }
+
+  .status-select-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .status-option {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-muted);
+  }
+
+  .status-option:hover { border-color: var(--pink-mid); color: var(--pink); }
+  .status-option.selected { border-color: var(--pink); background: var(--pink); color: white; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    grid-column: 1 / -1;
+  }
+  .empty-state .pig { font-size: 48px; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    z-index: 500;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .sidebar { width: 60px; }
+    .sidebar-logo .logo-text, .sidebar-label, .nav-item span,
+    .sidebar-client-tools .client-tool-btn span,
+    .client-tool-hint, .footer-info { display: none; }
+    .sidebar-logo { justify-content: center; padding: 16px 10px; }
+    .nav-item { justify-content: center; padding: 10px; }
+    .sidebar-footer { justify-content: center; padding: 12px 0; }
+    .main { margin-left: 60px; max-width: calc(100vw - 60px); padding: 20px 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .tickets-grid { grid-template-columns: 1fr; }
+    .filter-tabs { gap: 4px; }
+    .filter-tab { font-size: 12px; padding: 6px 12px; }
+    .main { padding: 16px 12px; }
+  }
+
+  /* Page accent on cards */
+  .ticket-card[data-status="in-progress"]::before { background: var(--blue); }
+  .ticket-card[data-status="pending"]::before { background: var(--orange); }
+  .ticket-card[data-status="repaired"]::before { background: var(--green); }
+  .ticket-card[data-status="collected"]::before { background: var(--gray); }
+  .ticket-card[data-status="cancelled"]::before { background: var(--red); }
+  .ticket-card[data-status="warranty"]::before { background: var(--purple); }
+
+  /* Stats row (optional small summary) */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-num { font-size: 24px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text); }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🐷</div>
+    <div class="logo-text">
+      <div class="logo-title">Fix It With Piggy</div>
+      <div class="logo-sub">Technician Portal</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Navigation</div>
+    <a class="nav-item active" href="#" onclick="showPage('dashboard')">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a class="nav-item" href="#" onclick="openNewTicket()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <span>New Ticket</span>
+    </a>
+    <a class="nav-item" href="#" onclick="filterByStatus('warranty')">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Warranty Repairs</span>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('clients')">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Clients</span>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('reports')">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Reports</span>
+    </a>
+  </div>
+
+  <div class="sidebar-client-tools">
+    <div class="sidebar-label">Client Tools</div>
+    <div class="client-tool-btn" onclick="showToast('Link copied to clipboard!','success')">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Open Client Tracking Portal</span>
+    </div>
+    <div class="client-tool-hint">Share this link with clients to track repairs</div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="avatar">T</div>
+    <div class="footer-info">
+      <div class="footer-name">Technician</div>
+      <div class="footer-role">Admin Portal</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main">
+
+  <!-- Page: Dashboard -->
+  <div id="page-dashboard">
+    <div class="top-bar">
+      <div class="page-header">
+        <div class="page-pig">🐷</div>
+        <div>
+          <div class="page-title">Repair Dashboard</div>
+          <div class="page-sub">Manage and track all repair tickets</div>
+        </div>
+      </div>
+      <button class="btn-new" onclick="openNewTicket()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Ticket
+      </button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search by ticket #, client name, or device..." oninput="renderTickets()">
+      </div>
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-status="all" onclick="setFilter('all')">All (<span class="tab-count-all">0</span>)</button>
+        <button class="filter-tab" data-status="pending" onclick="setFilter('pending')">Pending (<span class="tab-count-pending">0</span>)</button>
+        <button class="filter-tab" data-status="in-progress" onclick="setFilter('in-progress')">In Progress (<span class="tab-count-in-progress">0</span>)</button>
+        <button class="filter-tab" data-status="repaired" onclick="setFilter('repaired')">Repaired (<span class="tab-count-repaired">0</span>)</button>
+        <button class="filter-tab" data-status="collected" onclick="setFilter('collected')">Collected (<span class="tab-count-collected">0</span>)</button>
+        <button class="filter-tab" data-status="cancelled" onclick="setFilter('cancelled')">Cancelled (<span class="tab-count-cancelled">0</span>)</button>
+      </div>
+    </div>
+
+    <div class="tickets-grid" id="ticketsGrid"></div>
+  </div>
+
+  <!-- Page: Clients -->
+  <div id="page-clients" style="display:none">
+    <div class="top-bar">
+      <div class="page-header">
+        <div class="page-pig">👥</div>
+        <div>
+          <div class="page-title">Clients</div>
+          <div class="page-sub">All registered clients</div>
+        </div>
+      </div>
+    </div>
+    <div id="clientsList" style="background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)"></div>
+  </div>
+
+  <!-- Page: Reports -->
+  <div id="page-reports" style="display:none">
+    <div class="top-bar">
+      <div class="page-header">
+        <div class="page-pig">📊</div>
+        <div>
+          <div class="page-title">Reports</div>
+          <div class="page-sub">Revenue & performance overview</div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-row" id="reportsStats"></div>
+  </div>
+</main>
+
+<!-- ═══════════════ NEW TICKET MODAL ═══════════════ -->
+<div class="modal-overlay" id="newTicketModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🎫 New Repair Ticket</div>
+      <button class="modal-close" onclick="closeModal('newTicketModal')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Client Name *</label>
+        <input type="text" id="nt-client" placeholder="e.g. Jane Smith">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="nt-phone" placeholder="(555) 000-0000">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="nt-email" placeholder="client@email.com">
+      </div>
+      <div class="form-group">
+        <label>Device *</label>
+        <input type="text" id="nt-device" placeholder="e.g. iPhone 14 Pro">
+      </div>
+      <div class="form-group">
+        <label>Repair Type</label>
+        <select id="nt-repair">
+          <option value="">Select type...</option>
+          <option>Screen Replacement</option>
+          <option>Battery Replacement</option>
+          <option>Water Damage</option>
+          <option>Charging Port</option>
+          <option>Speaker / Mic</option>
+          <option>Camera Repair</option>
+          <option>Software Issue</option>
+          <option>Data Recovery</option>
+          <option>Motherboard Repair</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="nt-priority">
+          <option value="medium">Medium</option>
+          <option value="urgent">Urgent</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Price ($)</label>
+        <input type="number" id="nt-price" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" id="nt-due">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="nt-status">
+          <option value="pending">Pending Repair</option>
+          <option value="in-progress">In Progress</option>
+          <option value="repaired">Repaired</option>
+          <option value="collected">Collected</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Warranty Repair?</label>
+        <select id="nt-warranty">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Notes / Problem Description</label>
+        <textarea id="nt-notes" placeholder="Describe the issue..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('newTicketModal')">Cancel</button>
+      <button class="btn-submit" onclick="submitTicket()">Create Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TICKET DETAIL MODAL ═══════════════ -->
+<div class="modal-overlay" id="ticketDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detail-title">Ticket Details</div>
+      <button class="modal-close" onclick="closeModal('ticketDetailModal')">✕</button>
+    </div>
+    <div id="detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="deleteCurrentTicket()" style="color:#ef4444;border-color:#fca5a5">Delete Ticket</button>
+      <button class="btn-cancel" onclick="closeModal('ticketDetailModal')">Close</button>
+      <button class="btn-submit" onclick="saveDetailChanges()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════ DATA ═══════════════
+let tickets = JSON.parse(localStorage.getItem('piggy_tickets') || 'null') || [
+  { id:'TK18796897', client:'Charles Hamilton', phone:'(555) 234-1122', email:'charles@email.com', device:'iPhone 13', repair:'Screen Replacement', priority:'medium', price:100, paid:false, status:'in-progress', due:'2026-02-12', created:'2026-02-12', notes:'Cracked front screen.', warranty:false },
+  { id:'TK18090210', client:'Jahleel Morgan', phone:'(555) 876-5432', email:'jahleel@email.com', device:'Samsung Galaxy S22', repair:'Battery Replacement', priority:'medium', price:155, paid:false, status:'pending', due:'2026-03-05', created:'2026-02-12', notes:'Battery draining fast.', warranty:false },
+  { id:'TK46023669', client:'Mavelyn Cedeno', phone:'(555) 321-7890', email:'mavelyn@email.com', device:'iPhone 12 Pro', repair:'Water Damage', priority:'medium', price:380, paid:false, status:'pending', due:'2026-02-26', created:'2026-02-10', notes:'Dropped in water.', warranty:false },
+  { id:'TK22180156', client:'Elijah McCall', phone:'(555) 654-3210', email:'elijah@email.com', device:'iPad Air', repair:'Charging Port', priority:'medium', price:79.98, paid:false, status:'in-progress', due:'2026-02-04', created:'2026-02-04', notes:'Not charging at all.', warranty:false },
+  { id:'TK99652696', client:'Jose Ortiz', phone:'(555) 789-4561', email:'jose@email.com', device:'Google Pixel 7', repair:'Software Issue', priority:'medium', price:0, paid:false, status:'pending', due:'', created:'2026-01-23', notes:'Phone keeps restarting.', warranty:false },
+  { id:'TK15369874', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'iPhone 11', repair:'Camera Repair', priority:'urgent', price:0, paid:false, status:'in-progress', due:'2026-01-30', created:'2026-01-22', notes:'Front camera blurry.', warranty:false },
+  { id:'TK76688095', client:'Lizette Saldana', phone:'(555) 445-6677', email:'lizette@email.com', device:'iPhone XR', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'repaired', due:'', created:'2026-01-18', notes:'Screen shattered.', warranty:false },
+  { id:'TK12083316', client:'Celia Orellana', phone:'(555) 112-2334', email:'celia@email.com', device:'MacBook Air M1', repair:'Battery Replacement', priority:'medium', price:120, paid:true, status:'collected', due:'', created:'2026-01-15', notes:'Battery swollen.', warranty:false },
+  { id:'TK60956030', client:'Andrew Young', phone:'(555) 998-0011', email:'andrew@email.com', device:'Samsung A53', repair:'Screen Replacement', priority:'medium', price:80, paid:true, status:'collected', due:'', created:'2026-01-10', notes:'Screen cracked.', warranty:false },
+  { id:'TK33210044', client:'Maria Lopez', phone:'(555) 222-3344', email:'maria@email.com', device:'iPhone 14', repair:'Speaker / Mic', priority:'low', price:60, paid:true, status:'collected', due:'', created:'2026-01-08', notes:'Speaker barely audible.', warranty:false },
+  { id:'TK55867391', client:'David Kim', phone:'(555) 667-8899', email:'david@email.com', device:'iPad Pro 12.9"', repair:'Screen Replacement', priority:'medium', price:220, paid:true, status:'collected', due:'', created:'2026-01-05', notes:'Cracked display.', warranty:false },
+  { id:'TK80043721', client:'Tanya Brooks', phone:'(555) 500-1234', email:'tanya@email.com', device:'iPhone 12', repair:'Charging Port', priority:'medium', price:55, paid:true, status:'collected', due:'', created:'2025-12-28', notes:'Lightning port not working.', warranty:false },
+  { id:'TK91234567', client:'Kevin Nguyen', phone:'(555) 333-1122', email:'kevin@email.com', device:'Google Pixel 6', repair:'Water Damage', priority:'urgent', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-20', notes:'Client changed mind.', warranty:false },
+  { id:'TK47382910', client:'Sarah Davis', phone:'(555) 444-5555', email:'sarah@email.com', device:'iPhone SE 2022', repair:'Screen Replacement', priority:'medium', price:75, paid:false, status:'cancelled', due:'', created:'2025-12-15', notes:'Client went elsewhere.', warranty:false },
+  { id:'TK29384756', client:'Miguel Torres', phone:'(555) 777-8888', email:'miguel@email.com', device:'OnePlus 11', repair:'Battery Replacement', priority:'medium', price:0, paid:false, status:'cancelled', due:'', created:'2025-12-10', notes:'Device too old to repair economically.', warranty:false },
+  { id:'TK11223344', client:'Amy Chen', phone:'(555) 100-2000', email:'amy@email.com', device:'iPhone 15 Pro', repair:'Motherboard Repair', priority:'urgent', price:299, paid:true, status:'collected', due:'', created:'2025-12-05', notes:'Boot loop issue.', warranty:false },
+  { id:'TK55443322', client:'James Wilson', phone:'(555) 300-4000', email:'james@email.com', device:'Samsung S23 Ultra', repair:'Camera Repair', priority:'medium', price:140, paid:true, status:'collected', due:'', created:'2025-11-28', notes:'Rear camera shattered.', warranty:false },
+  { id:'TK99887766', client:'Patricia Moore', phone:'(555) 500-6000', email:'patricia@email.com', device:'iPad 9th Gen', repair:'Charging Port', priority:'low', price:45, paid:true, status:'collected', due:'', created:'2025-11-20', notes:'USB-C port damaged.', warranty:false },
+  { id:'TK34567890', client:'Robert Garcia', phone:'(555) 700-8000', email:'robert@email.com', device:'iPhone 13 Mini', repair:'Battery Replacement', priority:'medium', price:69, paid:true, status:'collected', due:'', created:'2025-11-12', notes:'Battery at 71% health.', warranty:false },
+  { id:'TK12345099', client:'Laura Martinez', phone:'(555) 900-1000', email:'laura@email.com', device:'Pixel 7 Pro', repair:'Data Recovery', priority:'urgent', price:150, paid:true, status:'collected', due:'', created:'2025-11-05', notes:'Phone would not turn on, data needed.', warranty:false },
+  { id:'TK66778899', client:'Tom Jackson', phone:'(555) 111-2222', email:'tom@email.com', device:'iPhone XS Max', repair:'Screen Replacement', priority:'medium', price:110, paid:true, status:'collected', due:'', created:'2025-10-28', notes:'Front screen cracked badly.', warranty:false },
+  { id:'TK44556677', client:'Nancy White', phone:'(555) 333-4444', email:'nancy@email.com', device:'Samsung Galaxy A73', repair:'Battery Replacement', priority:'low', price:55, paid:true, status:'collected', due:'', created:'2025-10-20', notes:'Old battery.', warranty:false },
+  { id:'TK88990011', client:'Chris Johnson', phone:'(555) 555-6666', email:'chris@email.com', device:'MacBook Pro 16"', repair:'Software Issue', priority:'medium', price:90, paid:true, status:'collected', due:'', created:'2025-10-15', notes:'macOS not booting.', warranty:false },
+  { id:'TK22334455', client:'Helen Lewis', phone:'(555) 777-8888', email:'helen@email.com', device:'iPhone 14 Plus', repair:'Speaker / Mic', priority:'medium', price:75, paid:true, status:'collected', due:'', created:'2025-10-08', notes:'Earpiece not working.', warranty:false },
+  { id:'TK00112233', client:'Mark Thompson', phone:'(555) 999-0000', email:'mark@email.com', device:'iPad Mini 6', repair:'Water Damage', priority:'urgent', price:200, paid:true, status:'collected', due:'', created:'2025-10-01', notes:'Fell in pool.', warranty:false },
+  { id:'TK77665544', client:'Susan Allen', phone:'(555) 222-1111', email:'susan@email.com', device:'iPhone 12 Mini', repair:'Screen Replacement', priority:'medium', price:85, paid:true, status:'collected', due:'', created:'2025-09-25', notes:'Screen cracked top corner.', warranty:false },
+  { id:'TK33445566', client:'Frank Hill', phone:'(555) 444-3333', email:'frank@email.com', device:'Galaxy Note 20', repair:'Charging Port', priority:'medium', price:60, paid:true, status:'collected', due:'', created:'2025-09-18', notes:'USB-C port loose.', warranty:false },
+  { id:'TK55667788', client:'Lisa Scott', phone:'(555) 666-5555', email:'lisa@email.com', device:'iPhone 11 Pro Max', repair:'Battery Replacement', priority:'low', price:70, paid:true, status:'collected', due:'', created:'2025-09-10', notes:'Battery draining.', warranty:false },
+  { id:'TK11009988', client:'George Turner', phone:'(555) 888-7777', email:'george@email.com', device:'Pixel 6a', repair:'Screen Replacement', priority:'medium', price:95, paid:true, status:'collected', due:'', created:'2025-09-02', notes:'Cracked front screen.', warranty:false },
+  { id:'TK99001122', client:'Diana Brown', phone:'(555) 000-9999', email:'diana@email.com', device:'iPhone 13 Pro', repair:'Camera Repair', priority:'medium', price:130, paid:true, status:'collected', due:'', created:'2025-08-26', notes:'Rear cameras not working.', warranty:false },
+];
+
+let currentFilter = 'all';
+let currentTicketId = null;
+
+function saveTickets() {
+  localStorage.setItem('piggy_tickets', JSON.stringify(tickets));
+}
+
+// ═══════════════ TICKET RENDERING ═══════════════
+function statusLabel(s) {
+  const map = {
+    'pending': 'Pending Repair',
+    'in-progress': 'In Progress',
+    'repaired': 'Repaired',
+    'collected': 'Collected',
+    'cancelled': 'Cancelled',
+    'warranty': 'Warranty'
+  };
+  return map[s] || s;
+}
+
+function statusClass(s) {
+  const map = {
+    'pending': 'status-pending',
+    'in-progress': 'status-in-progress',
+    'repaired': 'status-repaired',
+    'collected': 'status-collected',
+    'cancelled': 'status-cancelled',
+    'warranty': 'status-warranty'
+  };
+  return map[s] || '';
+}
+
+function statusIcon(s) {
+  const map = {
+    'pending': '⚠',
+    'in-progress': '🔧',
+    'repaired': '✓',
+    'collected': '✓',
+    'cancelled': '✕',
+    'warranty': '🛡'
+  };
+  return map[s] || '';
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const date = new Date(d + 'T00:00:00');
+  return date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function isDueOverdue(due) {
+  if (!due) return false;
+  return new Date(due + 'T00:00:00') < new Date();
+}
+
+function updateTabCounts() {
+  const counts = { all:0, pending:0, 'in-progress':0, repaired:0, collected:0, cancelled:0 };
+  tickets.forEach(t => {
+    counts.all++;
+    if (counts[t.status] !== undefined) counts[t.status]++;
+  });
+  Object.keys(counts).forEach(k => {
+    const el = document.querySelector(`.tab-count-${k}`);
+    if (el) el.textContent = counts[k];
+  });
+}
+
+function renderTickets() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('ticketsGrid');
+  if (!grid) return;
+
+  let filtered = tickets.filter(t => {
+    if (currentFilter !== 'all' && t.status !== currentFilter) return false;
+    if (search && !t.id.toLowerCase().includes(search) && !t.client.toLowerCase().includes(search) && !t.device.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  updateTabCounts();
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="pig">🐷</div><h3>No tickets found</h3><p>Try a different filter or search term.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => `
+    <div class="ticket-card" data-status="${t.status}" onclick="openTicketDetail('${t.id}')">
+      <div class="ticket-header">
+        <span class="ticket-id">#${t.id}</span>
+        <span class="badge badge-${t.priority}">${t.priority}</span>
+        <span class="status-badge ${statusClass(t.status)}">${statusIcon(t.status)} ${statusLabel(t.status)}</span>
+      </div>
+      <div class="ticket-client">${t.client}</div>
+      <div class="ticket-device">${t.device}${t.repair ? ' · ' + t.repair : ''}</div>
+      <div class="ticket-paid-check">
+        <div class="check-box ${t.paid ? 'checked' : ''}" onclick="event.stopPropagation(); togglePaid('${t.id}')">
+          ${t.paid ? '<svg width="10" height="10" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+        </div>
+        <span style="font-size:12px;color:var(--text-muted)">${t.paid ? 'Paid' : 'Unpaid'}</span>
+      </div>
+      <div class="ticket-price">$${parseFloat(t.price||0).toFixed(2)}</div>
+      <div class="ticket-footer">
+        <span>Created ${formatDate(t.created)}</span>
+        ${t.due ? `<span class="ticket-due ${isDueOverdue(t.due) ? 'overdue' : ''}">Due ${formatDate(t.due)}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function setFilter(status) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.toggle('active', t.dataset.status === status));
+  renderTickets();
+}
+
+function filterByStatus(status) {
+  showPage('dashboard');
+  setFilter(status);
+}
+
+function togglePaid(id) {
+  const t = tickets.find(x => x.id === id);
+  if (t) { t.paid = !t.paid; saveTickets(); renderTickets(); }
+}
+
+// ═══════════════ NEW TICKET ═══════════════
+function openNewTicket() {
+  document.getElementById('newTicketModal').classList.add('open');
+  // set default due date to 7 days from now
+  const d = new Date(); d.setDate(d.getDate()+7);
+  document.getElementById('nt-due').value = d.toISOString().split('T')[0];
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function randomId() {
+  return 'TK' + Math.floor(10000000 + Math.random()*90000000);
+}
+
+function submitTicket() {
+  const client = document.getElementById('nt-client').value.trim();
+  const device = document.getElementById('nt-device').value.trim();
+  if (!client) { showToast('Client name is required.','error'); return; }
+  if (!device) { showToast('Device is required.','error'); return; }
+
+  const today = new Date().toISOString().split('T')[0];
+  const t = {
+    id: randomId(),
+    client,
+    phone: document.getElementById('nt-phone').value,
+    email: document.getElementById('nt-email').value,
+    device,
+    repair: document.getElementById('nt-repair').value,
+    priority: document.getElementById('nt-priority').value,
+    price: parseFloat(document.getElementById('nt-price').value) || 0,
+    paid: false,
+    status: document.getElementById('nt-status').value,
+    due: document.getElementById('nt-due').value,
+    created: today,
+    notes: document.getElementById('nt-notes').value,
+    warranty: document.getElementById('nt-warranty').value === 'yes'
+  };
+
+  tickets.unshift(t);
+  saveTickets();
+  closeModal('newTicketModal');
+  renderTickets();
+  showToast(`Ticket #${t.id} created!`, 'success');
+
+  // Clear form
+  ['nt-client','nt-phone','nt-email','nt-device','nt-notes','nt-price'].forEach(f => document.getElementById(f).value='');
+  document.getElementById('nt-repair').value='';
+  document.getElementById('nt-priority').value='medium';
+  document.getElementById('nt-status').value='pending';
+  document.getElementById('nt-warranty').value='no';
+}
+
+// ═══════════════ TICKET DETAIL ═══════════════
+function openTicketDetail(id) {
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  currentTicketId = id;
+
+  document.getElementById('detail-title').textContent = `🎫 #${t.id}`;
+
+  const statuses = ['pending','in-progress','repaired','collected','cancelled'];
+  const statusBtns = statuses.map(s =>
+    `<button class="status-option ${t.status===s?'selected':''}" onclick="selectDetailStatus('${s}')" data-s="${s}">${statusLabel(s)}</button>`
+  ).join('');
+
+  document.getElementById('detail-body').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-row"><span class="detail-label">Client</span><span class="detail-value">${t.client}</span></div>
+      <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">${t.phone||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${t.email||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Device</span><span class="detail-value">${t.device}</span></div>
+      <div class="detail-row"><span class="detail-label">Repair Type</span><span class="detail-value">${t.repair||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Priority</span><span class="detail-value"><span class="badge badge-${t.priority}">${t.priority}</span></span></div>
+      <div class="detail-row"><span class="detail-label">Created</span><span class="detail-value">${formatDate(t.created)}</span></div>
+      <div class="detail-row"><span class="detail-label">Due Date</span><span class="detail-value">${t.due ? formatDate(t.due) : '—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Notes</span><span class="detail-value" style="max-width:70%;font-weight:400;font-size:13px">${t.notes||'—'}</span></div>
+    </div>
+    <div style="margin-bottom:18px">
+      <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Price</label>
+      <input type="number" id="detail-price" value="${t.price}" min="0" step="0.01" style="width:160px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;font-size:14px;font-weight:700;color:var(--pink)">
+    </div>
+    <div style="margin-bottom:18px">
+      <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Paid Status</label>
+      <div style="display:flex;gap:8px">
+        <button class="status-option ${t.paid?'selected':''}" id="btn-paid-yes" onclick="selectDetailPaid(true)">✓ Paid</button>
+        <button class="status-option ${!t.paid?'selected':''}" id="btn-paid-no" onclick="selectDetailPaid(false)">✕ Unpaid</button>
+      </div>
+    </div>
+    <div>
+      <label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:8px">Update Status</label>
+      <div class="status-select-wrap" id="detailStatusBtns">${statusBtns}</div>
+    </div>
+  `;
+
+  document.getElementById('ticketDetailModal').classList.add('open');
+}
+
+function selectDetailStatus(s) {
+  document.querySelectorAll('#detailStatusBtns .status-option').forEach(b => b.classList.toggle('selected', b.dataset.s === s));
+  const t = tickets.find(x => x.id === currentTicketId);
+  if (t) t._pendingStatus = s;
+}
+
+function selectDetailPaid(paid) {
+  document.getElementById('btn-paid-yes').classList.toggle('selected', paid);
+  document.getElementById('btn-paid-no').classList.toggle('selected', !paid);
+  const t = tickets.find(x => x.id === currentTicketId);
+  if (t) t._pendingPaid = paid;
+}
+
+function saveDetailChanges() {
+  const t = tickets.find(x => x.id === currentTicketId);
+  if (!t) return;
+  const priceInput = document.getElementById('detail-price');
+  if (priceInput) t.price = parseFloat(priceInput.value) || 0;
+  if (t._pendingStatus !== undefined) { t.status = t._pendingStatus; delete t._pendingStatus; }
+  if (t._pendingPaid !== undefined) { t.paid = t._pendingPaid; delete t._pendingPaid; }
+  saveTickets();
+  renderTickets();
+  closeModal('ticketDetailModal');
+  showToast('Ticket updated!', 'success');
+}
+
+function deleteCurrentTicket() {
+  if (!currentTicketId) return;
+  if (!confirm('Delete this ticket? This cannot be undone.')) return;
+  tickets = tickets.filter(x => x.id !== currentTicketId);
+  saveTickets();
+  renderTickets();
+  closeModal('ticketDetailModal');
+  showToast('Ticket deleted.', 'success');
+}
+
+// ═══════════════ PAGES ═══════════════
+function showPage(page) {
+  ['dashboard','clients','reports'].forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if (el) el.style.display = p === page ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  if (page === 'clients') renderClients();
+  if (page === 'reports') renderReports();
+}
+
+function renderClients() {
+  const clientMap = {};
+  tickets.forEach(t => {
+    if (!clientMap[t.client]) clientMap[t.client] = { name:t.client, phone:t.phone, email:t.email, count:0, spent:0 };
+    clientMap[t.client].count++;
+    clientMap[t.client].spent += t.price || 0;
+  });
+
+  const rows = Object.values(clientMap).sort((a,b) => b.spent - a.spent).map(c => `
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border)">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f48cb6,#e91e8c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0">${c.name[0]}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:14px">${c.name}</div>
+        <div style="font-size:12px;color:var(--text-muted)">${c.phone||''} ${c.email ? '· '+c.email : ''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px;font-weight:700;color:var(--pink)">$${c.spent.toFixed(2)}</div>
+        <div style="font-size:11px;color:var(--text-muted)">${c.count} ticket${c.count!==1?'s':''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('clientsList').innerHTML = rows || '<div style="padding:40px;text-align:center;color:var(--text-muted)">No clients yet.</div>';
+}
+
+function renderReports() {
+  const total = tickets.length;
+  const revenue = tickets.filter(t => t.paid).reduce((s,t) => s+(t.price||0), 0);
+  const outstanding = tickets.filter(t => !t.paid && t.status !== 'cancelled').reduce((s,t) => s+(t.price||0), 0);
+  const completed = tickets.filter(t => ['repaired','collected'].includes(t.status)).length;
+
+  const stats = [
+    { num: total, label: 'Total Tickets' },
+    { num: '$'+revenue.toFixed(2), label: 'Revenue Collected' },
+    { num: '$'+outstanding.toFixed(2), label: 'Outstanding Balance' },
+    { num: completed, label: 'Completed Repairs' },
+    { num: tickets.filter(t=>t.status==='pending').length, label: 'Pending' },
+    { num: tickets.filter(t=>t.status==='in-progress').length, label: 'In Progress' },
+    { num: tickets.filter(t=>t.status==='cancelled').length, label: 'Cancelled' },
+    { num: tickets.filter(t=>t.warranty).length, label: 'Warranty Jobs' },
+  ];
+
+  document.getElementById('reportsStats').innerHTML = stats.map(s => `
+    <div class="stat-card">
+      <div class="stat-num">${s.num}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════ TOAST ═══════════════
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════ CLOSE ON OVERLAY CLICK ═══════════════
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ═══════════════ INIT ═══════════════
+renderTickets();
+</script>
+</body>
+</html>
