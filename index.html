@@ -1022,11 +1022,13 @@
     </div>
 
     <div class="sq-settings-note">
-      <strong style="display:block;margin-bottom:4px">🔑 How to get your credentials:</strong>
-      1. Go to <a href="https://developer.squareup.com/apps" target="_blank">developer.squareup.com/apps</a><br>
-      2. Create or open an app → click <strong>OAuth</strong> or <strong>Credentials</strong><br>
-      3. Copy your <strong>Access Token</strong> (use Sandbox for testing)<br>
-      4. Go to <a href="https://app.squareup.com/dashboard/locations" target="_blank">app.squareup.com → Locations</a> and copy your <strong>Location ID</strong>
+      <strong style="display:block;margin-bottom:6px">🔑 How to get your credentials:</strong>
+      1. Go to <a href="https://developer.squareup.com/apps" target="_blank">developer.squareup.com/apps</a> → create or open an app<br>
+      2. Click <strong>Credentials</strong> in the left menu<br>
+      3. For <strong>Sandbox</strong> testing: copy the <em>Sandbox Access Token</em><br>
+      &nbsp;&nbsp;&nbsp;For <strong>Production</strong> (live payments): copy the <em>Production Access Token</em><br>
+      4. ⚠️ <strong>The token MUST match the environment you select below!</strong><br>
+      5. Go to <a href="https://app.squareup.com/dashboard/locations" target="_blank">squareup.com → Locations</a> and copy your <strong>Location ID</strong>
     </div>
 
     <div class="sq-settings-grid" style="margin-top:18px">
@@ -1525,22 +1527,35 @@ async function testSquareConnection() {
   const resultDiv = document.getElementById('sq-test-result');
   if (!token) { resultDiv.innerHTML = '<div style="color:#ef4444;font-size:13px;padding:8px">⚠ Please enter an Access Token first.</div>'; return; }
 
-  resultDiv.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">Testing connection...</div>';
+  resultDiv.innerHTML = '<div style="font-size:13px;padding:8px;color:#666">🔄 Testing connection...</div>';
   const baseUrl = env === 'sandbox' ? 'https://connect.squareupsandbox.com' : 'https://connect.squareup.com';
+  const targetUrl = `${baseUrl}/v2/locations`;
+  const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
 
   try {
-    const res = await fetch(`${baseUrl}/v2/locations`, {
-      headers: { 'Square-Version': '2024-01-18', 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    const res = await fetch(proxyUrl, {
+      method: 'GET',
+      headers: {
+        'Square-Version': '2024-01-18',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     });
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch(pe) {
+      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Unexpected response from proxy. Try again in a moment.</div>`;
+      return;
+    }
     if (res.ok && data.locations) {
-      const locNames = data.locations.map(l => `${l.name} (${l.id})`).join(', ');
-      resultDiv.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected! Locations: ${locNames}</div>`;
+      const locNames = data.locations.map(l => `${l.name} (${l.id})`).join('<br>');
+      resultDiv.innerHTML = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#15803d;margin-top:4px">✅ Connected!<br><strong>Locations found:</strong><br>${locNames}</div>`;
     } else {
-      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Error: ${data.errors?.[0]?.detail || 'Invalid token'}</div>`;
+      const errDetail = data.errors?.[0]?.detail || data.errors?.[0]?.code || 'Invalid token or Location ID';
+      resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Square said: <strong>${errDetail}</strong><br><span style="font-size:11.5px;color:#888">Double-check your Access Token matches your environment (sandbox vs production).</span></div>`;
     }
   } catch(e) {
-    resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Network error. Check token and try again.</div>`;
+    resultDiv.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:10px 14px;font-size:12.5px;color:#dc2626;margin-top:4px">❌ Network error: <strong>${e.message}</strong><br><span style="font-size:11.5px;color:#888">This is usually a CORS/proxy issue. Try refreshing and testing again.</span></div>`;
   }
 }
 
@@ -1635,18 +1650,32 @@ async function generateSquareLink(ticketId) {
   if (!body.pre_populated_data.buyer_phone_number) delete body.pre_populated_data.buyer_phone_number;
   if (!body.checkout_options.merchant_support_email) delete body.checkout_options.merchant_support_email;
 
+  const sqEndpoint = `${baseUrl}/v2/online-checkout/payment-links`;
+  const sqProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(sqEndpoint);
+
   try {
-    const res = await fetch(`${baseUrl}/v2/online-checkout/payment-links`, {
+    const res = await fetch(sqProxyUrl, {
       method: 'POST',
       headers: {
         'Square-Version': '2024-01-18',
         'Authorization': `Bearer ${cfg.token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-requested-with': 'XMLHttpRequest'
       },
       body: JSON.stringify(body)
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    let data;
+    try { data = JSON.parse(rawText); } catch(pe) {
+      if (statusDiv) statusDiv.innerHTML = `
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
+          <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Proxy Error</div>
+          <div style="font-size:12px;color:#b91c1c">The CORS proxy returned an unexpected response. Please try again in a few seconds — the proxy may be rate-limiting.</div>
+          <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
+        </div>`;
+      return;
+    }
 
     if (res.ok && data.payment_link && data.payment_link.url) {
       const url = data.payment_link.url;
@@ -1685,7 +1714,13 @@ async function generateSquareLink(ticketId) {
     statusDiv.innerHTML = `
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin-top:4px">
         <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px">❌ Network Error</div>
-        <div style="font-size:12.5px;color:#b91c1c">${e.message}</div>
+        <div style="font-size:12.5px;color:#b91c1c;margin-bottom:6px">${e.message}</div>
+        <div style="font-size:11.5px;color:#888;line-height:1.5">
+          Possible causes:<br>
+          • Your Access Token doesn't match the environment (sandbox vs production)<br>
+          • The CORS proxy is temporarily unavailable — wait 10 seconds and retry<br>
+          • Check your internet connection
+        </div>
         <button class="square-btn" style="margin-top:10px" onclick="generateSquareLink('${ticketId}')">⬛ Try Again</button>
       </div>
     `;
